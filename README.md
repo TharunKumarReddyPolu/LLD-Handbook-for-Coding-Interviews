@@ -1,6 +1,8 @@
-# 📘 Low Level Design (LLD) Handbook for Coding Interviews
+# 📘 Low-Level Design (LLD) Handbook for Coding Interviews
 
 <div align="center">
+  
+![LLD Handbook Cover](https://github.com/user-attachments/assets/94df66b5-502a-49f3-873f-6a65556eed73)
 
 [![GitHub stars](https://img.shields.io/github/stars/TharunKumarReddyPolu/LLD-Handbook-for-Coding-Interviews?style=social)](https://github.com/TharunKumarReddyPolu/LLD-Handbook-for-Coding-Interviews/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/TharunKumarReddyPolu/LLD-Handbook-for-Coding-Interviews?style=social)](https://github.com/TharunKumarReddyPolu/LLD-Handbook-for-Coding-Interviews/network/members)

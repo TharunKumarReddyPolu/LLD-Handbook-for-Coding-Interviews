@@ -31,52 +31,52 @@ graph TD
 
 ## Patterns
 
-### [Chain of Responsibility](chain-of-responsibility.md)
+### Chain of Responsibility
 - **Purpose**: Passes requests along a chain of handlers until one handles it
 - **Use When**: Multiple objects may handle a request and the handler isn't known beforehand
 - **Example**: Logging frameworks, event handling systems
 
-### [Command](command.md)
+### Command
 - **Purpose**: Encapsulates a request as an object
 - **Use When**: You want to parameterize objects with operations
 - **Example**: GUI buttons, undo functionality
 
-### [Iterator](iterator.md)
+### Iterator
 - **Purpose**: Provides a way to access elements of a collection sequentially
 - **Use When**: You want to traverse a collection without exposing its internal structure
 - **Example**: Collection traversal, custom iteration patterns
 
-### [Mediator](mediator.md)
+### Mediator
 - **Purpose**: Defines an object that encapsulates how a set of objects interact
 - **Use When**: A set of objects communicate in well-defined but complex ways
 - **Example**: Air traffic control, chat rooms
 
-### [Memento](memento.md)
+### Memento
 - **Purpose**: Captures and externalizes an object's internal state
 - **Use When**: You need to save and restore an object's state
 - **Example**: Undo mechanisms, checkpoints
 
-### [Observer](observer.md)
+### Observer
 - **Purpose**: Defines a one-to-many dependency between objects
 - **Use When**: A change to one object requires changing others
 - **Example**: Event handling, GUI components
 
-### [State](state.md)
+### State
 - **Purpose**: Allows an object to alter its behavior when its internal state changes
 - **Use When**: An object's behavior depends on its state
 - **Example**: Vending machines, workflow systems
 
-### [Strategy](strategy.md)
+### Strategy
 - **Purpose**: Defines a family of algorithms and makes them interchangeable
 - **Use When**: You want to use different variants of an algorithm within an object
 - **Example**: Sorting algorithms, payment methods
 
-### [Template Method](template-method.md)
+### Template Method
 - **Purpose**: Defines the skeleton of an algorithm in a method
 - **Use When**: You want to define the skeleton of an algorithm and let subclasses override specific steps
 - **Example**: Data mining operations, build processes
 
-### [Visitor](visitor.md)
+### Visitor
 - **Purpose**: Represents an operation to be performed on elements of an object structure
 - **Use When**: You want to define operations on a composite structure
 - **Example**: Document processing, AST traversal

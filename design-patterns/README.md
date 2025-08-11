@@ -9,36 +9,36 @@ Design patterns are typical solutions to common problems in software design. Eac
 ### [🏭 Creational Patterns](creational/README.md)
 Provide object creation mechanisms that increase flexibility and reuse of existing code.
 
-- [Factory Method](creational/factory-method.md)
-- [Abstract Factory](creational/abstract-factory.md)
-- [Builder](creational/builder.md)
-- [Prototype](creational/prototype.md)
-- [Singleton](creational/singleton.md)
+- Factory Method
+- Abstract Factory
+- Builder
+- Prototype
+- Singleton
 
 ### [🔨 Structural Patterns](structural/README.md)
 Explain how to assemble objects and classes into larger structures while keeping these structures flexible and efficient.
 
-- [Adapter](structural/adapter.md)
-- [Bridge](structural/bridge.md)
-- [Composite](structural/composite.md)
-- [Decorator](structural/decorator.md)
-- [Facade](structural/facade.md)
-- [Flyweight](structural/flyweight.md)
-- [Proxy](structural/proxy.md)
+- Adapter
+- Bridge
+- Composite
+- Decorator
+- Facade
+- Flyweight
+- Proxy
 
 ### [🎭 Behavioral Patterns](behavioral/README.md)
 Take care of effective communication and the assignment of responsibilities between objects.
 
-- [Chain of Responsibility](behavioral/chain-of-responsibility.md)
-- [Command](behavioral/command.md)
-- [Iterator](behavioral/iterator.md)
-- [Mediator](behavioral/mediator.md)
-- [Memento](behavioral/memento.md)
-- [Observer](behavioral/observer.md)
-- [State](behavioral/state.md)
-- [Strategy](behavioral/strategy.md)
-- [Template Method](behavioral/template-method.md)
-- [Visitor](behavioral/visitor.md)
+- Chain of Responsibility
+- Command
+- Iterator
+- Mediator
+- Memento
+- Observer
+- State
+- Strategy
+- Template Method
+- Visitor
 
 ## Pattern Selection Guide
 

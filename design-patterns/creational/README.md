@@ -21,27 +21,27 @@ graph TD
 
 ## Patterns
 
-### [Factory Method](factory-method.md)
+### Factory Method
 - **Purpose**: Defines an interface for creating objects but lets subclasses decide which class to instantiate
 - **Use When**: You don't know the exact types and dependencies of the objects your code will work with
 - **Example**: Document creation in different formats (PDF, HTML)
 
-### [Abstract Factory](abstract-factory.md)
+### Abstract Factory
 - **Purpose**: Creates families of related or dependent objects without specifying their concrete classes
 - **Use When**: Your system needs to be independent from how its products are created, composed, and represented
 - **Example**: UI elements for different operating systems
 
-### [Builder](builder.md)
+### Builder
 - **Purpose**: Separates the construction of a complex object from its representation
 - **Use When**: You need to create complex objects with lots of optional components and configurations
 - **Example**: Custom computer configuration builder
 
-### [Prototype](prototype.md)
+### Prototype
 - **Purpose**: Creates new objects by cloning an existing object, known as the prototype
 - **Use When**: You need to create objects based on an existing object or avoid expensive creation
 - **Example**: Creating game objects from templates
 
-### [Singleton](singleton.md)
+### Singleton
 - **Purpose**: Ensures a class has only one instance and provides a global point of access to it
 - **Use When**: Exactly one object is needed to coordinate actions across the system
 - **Example**: Database connection pool, logging service

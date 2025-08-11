@@ -25,37 +25,37 @@ graph TD
 
 ## Patterns
 
-### [Adapter](adapter.md)
+### Adapter
 - **Purpose**: Allows incompatible interfaces to work together by wrapping an object in an adapter to make it compatible with another class
 - **Use When**: You want to use an existing class that doesn't fit your interface
 - **Example**: Converting data formats between systems
 
-### [Bridge](bridge.md)
+### Bridge
 - **Purpose**: Separates an abstraction from its implementation so that both can vary independently
 - **Use When**: You want to avoid a permanent binding between an abstraction and its implementation
 - **Example**: Cross-platform GUI toolkits
 
-### [Composite](composite.md)
+### Composite
 - **Purpose**: Composes objects into tree structures to represent part-whole hierarchies
 - **Use When**: You want clients to treat individual objects and compositions uniformly
 - **Example**: File system structure, GUI components
 
-### [Decorator](decorator.md)
+### Decorator
 - **Purpose**: Attaches additional responsibilities to objects dynamically
 - **Use When**: You want to add behavior to individual objects without affecting other objects
 - **Example**: Adding features to streams, UI components
 
-### [Facade](facade.md)
+### Facade
 - **Purpose**: Provides a unified interface to a set of interfaces in a subsystem
 - **Use When**: You want to provide a simple interface to a complex system
 - **Example**: Library management system, complex API wrappers
 
-### [Flyweight](flyweight.md)
+### Flyweight
 - **Purpose**: Uses sharing to support large numbers of fine-grained objects efficiently
 - **Use When**: You need a large number of similar objects that are unique in only a few parameters
 - **Example**: Character rendering in text editors, game object pools
 
-### [Proxy](proxy.md)
+### Proxy
 - **Purpose**: Provides a surrogate or placeholder for another object to control access to it
 - **Use When**: You want to control access to an object, or delay its creation until needed
 - **Example**: Lazy loading of resources, access control

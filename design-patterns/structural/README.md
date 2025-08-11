@@ -420,10 +420,10 @@ public class ProxyImage implements Image {
    - Solution: Use proxies only when control or lazy loading is needed
 
 ## Additional Resources
-- [Adapter Pattern](adapter.md)
-- [Bridge Pattern](bridge.md)
-- [Composite Pattern](composite.md)
-- [Decorator Pattern](decorator.md)
-- [Facade Pattern](facade.md)
-- [Flyweight Pattern](flyweight.md)
-- [Proxy Pattern](proxy.md) 
+- [Adapter Pattern](https://refactoring.guru/design-patterns/adapter)
+- [Bridge Pattern](https://refactoring.guru/design-patterns/bridge)
+- [Composite Pattern](https://refactoring.guru/design-patterns/composite)
+- [Decorator Pattern](https://refactoring.guru/design-patterns/decorator)
+- [Facade Pattern](https://refactoring.guru/design-patterns/facade)
+- [Flyweight Pattern](https://refactoring.guru/design-patterns/flyweight)
+- [Proxy Pattern](https://refactoring.guru/design-patterns/proxy)

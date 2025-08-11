@@ -489,13 +489,13 @@ public class ConcreteVisitor implements Visitor {
    - Solution: Keep element structure stable
 
 ## Additional Resources
-- [Chain of Responsibility Pattern](chain-of-responsibility.md)
-- [Command Pattern](command.md)
-- [Iterator Pattern](iterator.md)
-- [Mediator Pattern](mediator.md)
-- [Memento Pattern](memento.md)
-- [Observer Pattern](observer.md)
-- [State Pattern](state.md)
-- [Strategy Pattern](strategy.md)
-- [Template Method Pattern](template-method.md)
-- [Visitor Pattern](visitor.md) 
+- [Chain of Responsibility Pattern](https://refactoring.guru/design-patterns/chain-of-responsibility)
+- [Command Pattern](https://refactoring.guru/design-patterns/command)
+- [Iterator Pattern](https://refactoring.guru/design-patterns/iterator)
+- [Mediator Pattern](https://refactoring.guru/design-patterns/mediator)
+- [Memento Pattern](https://refactoring.guru/design-patterns/memento)
+- [Observer Pattern](https://refactoring.guru/design-patterns/observer)
+- [State Pattern](https://refactoring.guru/design-patterns/state)
+- [Strategy Pattern](https://refactoring.guru/design-patterns/strategy)
+- [Template Method Pattern](https://refactoring.guru/design-patterns/template-method)
+- [Visitor Pattern](https://refactoring.guru/design-patterns/visitor)

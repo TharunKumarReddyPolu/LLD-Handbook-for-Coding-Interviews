@@ -231,8 +231,8 @@ public class Singleton {
    - Solution: Keep prototype hierarchies shallow
 
 ## Additional Resources
-- [Factory Method Pattern](factory-method.md)
-- [Abstract Factory Pattern](abstract-factory.md)
-- [Builder Pattern](builder.md)
-- [Prototype Pattern](prototype.md)
-- [Singleton Pattern](singleton.md) 
+- [Factory Method Pattern](https://refactoring.guru/design-patterns/factory-method)
+- [Abstract Factory Pattern](https://refactoring.guru/design-patterns/abstract-factory)
+- [Builder Pattern](https://refactoring.guru/design-patterns/builder)
+- [Prototype Pattern](https://refactoring.guru/design-patterns/prototype)
+- [Singleton Pattern](https://refactoring.guru/design-patterns/singleton)

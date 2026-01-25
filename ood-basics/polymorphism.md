@@ -3,11 +3,36 @@
 ## 📝 Definition
 Polymorphism means "many forms" and occurs when we have many classes that are related to each other by inheritance. It allows us to perform a single action in different ways and enables you to process objects differently based on their data type.
 
+## 📚 Prerequisites & Learning Path
+
+### Prerequisites
+Before studying Polymorphism, you should understand:
+- [Classes & Objects](classes-and-objects.md) - Class structure and instances
+- [Encapsulation](encapsulation.md) - Access modifiers and methods
+- [Inheritance](inheritance.md) - Class hierarchies and method inheritance
+
+### Learning Path
+After mastering Polymorphism, continue with:
+1. **Next:** [Abstraction](abstraction.md) - Abstract classes and interfaces
+2. **Then:** [Interfaces](interfaces.md) - Define contracts for polymorphic behavior
+3. **Related:** [Open/Closed Principle](../solid-principles/ocp.md) - Polymorphism enables OCP
+4. **Patterns:** [Strategy Pattern](../design-patterns/behavioral/README.md) - Polymorphism in action
+
+### How This Fits in the Big Picture
+```
+Classes → Encapsulation → Inheritance → Polymorphism → Abstraction
+                                             ↓
+                              Key enabler for flexible designs
+                              Makes OCP and Strategy Pattern possible
+```
+
 ## 🎯 Key Concepts
 
 ### 1. Compile-time Polymorphism (Static/Method Overloading)
 - Resolved during compile time
 - Method overloading with different parameters
+
+#### Java
 ```java
 class Calculator {
     // Method overloading
@@ -25,9 +50,49 @@ class Calculator {
 }
 ```
 
+#### Python
+```python
+from typing import overload, Union
+
+class Calculator:
+    # Python uses duck typing, but we can use @overload for type hints
+    @overload
+    def add(self, a: int, b: int) -> int: ...
+    @overload
+    def add(self, a: float, b: float) -> float: ...
+    @overload
+    def add(self, a: int, b: int, c: int) -> int: ...
+    
+    def add(self, a, b, c=None):
+        if c is not None:
+            return a + b + c
+        return a + b
+```
+
+#### C++
+```cpp
+class Calculator {
+public:
+    // Method overloading
+    int add(int a, int b) {
+        return a + b;
+    }
+    
+    double add(double a, double b) {
+        return a + b;
+    }
+    
+    int add(int a, int b, int c) {
+        return a + b + c;
+    }
+};
+```
+
 ### 2. Runtime Polymorphism (Dynamic/Method Overriding)
 - Resolved during runtime
 - Method overriding in inherited classes
+
+#### Java
 ```java
 class Animal {
     void makeSound() {
@@ -48,6 +113,46 @@ class Cat extends Animal {
         System.out.println("Meow!");
     }
 }
+```
+
+#### Python
+```python
+class Animal:
+    def make_sound(self) -> None:
+        print("Some sound")
+
+class Dog(Animal):
+    def make_sound(self) -> None:
+        print("Woof!")
+
+class Cat(Animal):
+    def make_sound(self) -> None:
+        print("Meow!")
+```
+
+#### C++
+```cpp
+class Animal {
+public:
+    virtual ~Animal() = default;
+    virtual void makeSound() {
+        std::cout << "Some sound" << std::endl;
+    }
+};
+
+class Dog : public Animal {
+public:
+    void makeSound() override {
+        std::cout << "Woof!" << std::endl;
+    }
+};
+
+class Cat : public Animal {
+public:
+    void makeSound() override {
+        std::cout << "Meow!" << std::endl;
+    }
+};
 ```
 
 ## 💡 Best Practices
@@ -232,6 +337,55 @@ public class Main {
     }
 }
 ```
+
+## ❓ Frequently Asked Questions
+
+### Q1: What's the difference between overloading and overriding?
+**A:**
+| Overloading | Overriding |
+|-------------|------------|
+| Same name, different parameters | Same name and parameters |
+| Compile-time (static) | Runtime (dynamic) |
+| In same class or subclass | Must be in subclass |
+| Return type can differ | Return type must be same/covariant |
+| No `@Override` annotation | Use `@Override` annotation |
+
+### Q2: What is dynamic dispatch / late binding?
+**A:** The process of selecting which method to call at runtime:
+- JVM looks at actual object type, not reference type
+- Enables runtime polymorphism
+- Only works with instance methods (not static)
+- Key mechanism behind polymorphism
+
+### Q3: Can static methods be overridden?
+**A:** No! Static methods are hidden, not overridden:
+- They're bound at compile time based on reference type
+- Subclass can define same static method, but it's "hiding"
+- Use class name to call static methods, not object reference
+
+### Q4: What are covariant return types?
+**A:** Allowing overriding methods to return a subtype:
+```java
+class Animal { Animal clone() { ... } }
+class Dog extends Animal { Dog clone() { ... } } // ✅ Covariant
+```
+- Return type in subclass can be more specific
+- Introduced in Java 5
+- Makes APIs more type-safe
+
+### Q5: Why use polymorphism?
+**A:** Key benefits:
+- Write generic code that works with many types
+- Add new types without changing existing code (OCP)
+- Reduce code duplication
+- Enable flexible and extensible designs
+- Foundation for many design patterns
+
+### Q6: Can constructors be polymorphic?
+**A:** No, constructors are not inherited and cannot be overridden:
+- Each class has its own constructors
+- Constructors are called in order (parent first)
+- Use Factory pattern for polymorphic object creation
 
 ## 📚 Additional Resources
 

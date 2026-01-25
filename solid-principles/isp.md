@@ -3,11 +3,35 @@
 ## 📝 Definition
 The Interface Segregation Principle states that clients should not be forced to depend on interfaces they don't use. In other words, it's better to have many smaller, specific interfaces rather than a few large, general ones.
 
+## 📚 Prerequisites & Learning Path
+
+### Prerequisites
+Before studying ISP, you should understand:
+- [SRP](srp.md), [OCP](ocp.md) & [LSP](lsp.md) - Previous SOLID principles
+- [Interfaces](../ood-basics/interfaces.md) - Contract definition and implementation
+- [Abstract Classes](../ood-basics/abstract-classes.md) - When to use abstractions
+
+### Learning Path
+After mastering ISP, continue with:
+1. **Next:** [Dependency Inversion Principle (DIP)](dip.md) - Complete SOLID knowledge
+2. **Then:** [Design Patterns Overview](../design-patterns/README.md) - Apply SOLID in patterns
+3. **Related:** [Adapter Pattern](../design-patterns/structural/README.md) - Bridge incompatible interfaces
+
+### How ISP Fits in the Big Picture
+```
+SRP → OCP → LSP → ISP → DIP
+                   ↓
+ISP keeps interfaces focused and cohesive
+Prevents "fat interfaces" and unnecessary dependencies
+```
+
 ## 🎯 Key Concepts
 
 ### 1. Interface Pollution
 - Large interfaces lead to tight coupling
 - Classes implement methods they don't need
+
+#### Java
 ```java
 // Bad - Fat interface
 public interface Worker {
@@ -46,9 +70,103 @@ public interface Employee extends Workable, Payable {
 }
 ```
 
+#### Python
+```python
+from abc import ABC, abstractmethod
+
+# Bad - Fat interface
+class Worker(ABC):
+    @abstractmethod
+    def work(self): pass
+    @abstractmethod
+    def eat(self): pass
+    @abstractmethod
+    def sleep(self): pass
+    @abstractmethod
+    def calculate_salary(self): pass
+    @abstractmethod
+    def report_hours(self): pass
+
+# Good - Segregated interfaces
+class Workable(ABC):
+    @abstractmethod
+    def work(self) -> None: pass
+    @abstractmethod
+    def take_break(self) -> None: pass
+
+class Eatable(ABC):
+    @abstractmethod
+    def eat(self) -> None: pass
+
+class Sleepable(ABC):
+    @abstractmethod
+    def sleep(self) -> None: pass
+
+class Payable(ABC):
+    @abstractmethod
+    def calculate_salary(self) -> None: pass
+    @abstractmethod
+    def report_hours(self) -> None: pass
+
+class Employee(Workable, Payable):
+    @abstractmethod
+    def request_vacation(self) -> None: pass
+    @abstractmethod
+    def attend_meeting(self) -> None: pass
+```
+
+#### C++
+```cpp
+// Bad - Fat interface
+class Worker {
+public:
+    virtual ~Worker() = default;
+    virtual void work() = 0;
+    virtual void eat() = 0;
+    virtual void sleep() = 0;
+    virtual void calculateSalary() = 0;
+    virtual void reportHours() = 0;
+};
+
+// Good - Segregated interfaces
+class Workable {
+public:
+    virtual ~Workable() = default;
+    virtual void work() = 0;
+    virtual void takeBreak() = 0;
+};
+
+class Eatable {
+public:
+    virtual ~Eatable() = default;
+    virtual void eat() = 0;
+};
+
+class Sleepable {
+public:
+    virtual ~Sleepable() = default;
+    virtual void sleep() = 0;
+};
+
+class Payable {
+public:
+    virtual ~Payable() = default;
+    virtual void calculateSalary() = 0;
+    virtual void reportHours() = 0;
+};
+
+class Employee : public Workable, public Payable {
+public:
+    virtual void requestVacation() = 0;
+    virtual void attendMeeting() = 0;
+};
+```
+
 ### 2. Role Interfaces
 - Interfaces should represent roles or capabilities
 - Classes can implement multiple role interfaces
+
+#### Java
 ```java
 public interface Printer {
     void print(Document document);
@@ -87,6 +205,90 @@ public class MultiFunction implements Printer, Scanner, Faxer {
         // Fax implementation
     }
 }
+```
+
+#### Python
+```python
+from abc import ABC, abstractmethod
+
+class Printer(ABC):
+    @abstractmethod
+    def print(self, document: Document) -> None: pass
+
+class Scanner(ABC):
+    @abstractmethod
+    def scan(self, document: Document) -> None: pass
+
+class Faxer(ABC):
+    @abstractmethod
+    def fax(self, document: Document) -> None: pass
+
+# Simple printer only implements what it can do
+class SimplePrinter(Printer):
+    def print(self, document: Document) -> None:
+        # Print implementation
+        pass
+
+# Multi-function device implements multiple interfaces
+class MultiFunction(Printer, Scanner, Faxer):
+    def print(self, document: Document) -> None:
+        # Print implementation
+        pass
+    
+    def scan(self, document: Document) -> None:
+        # Scan implementation
+        pass
+    
+    def fax(self, document: Document) -> None:
+        # Fax implementation
+        pass
+```
+
+#### C++
+```cpp
+class Document;
+
+class Printer {
+public:
+    virtual ~Printer() = default;
+    virtual void print(const Document& document) = 0;
+};
+
+class Scanner {
+public:
+    virtual ~Scanner() = default;
+    virtual void scan(const Document& document) = 0;
+};
+
+class Faxer {
+public:
+    virtual ~Faxer() = default;
+    virtual void fax(const Document& document) = 0;
+};
+
+// Simple printer only implements what it can do
+class SimplePrinter : public Printer {
+public:
+    void print(const Document& document) override {
+        // Print implementation
+    }
+};
+
+// Multi-function device implements multiple interfaces
+class MultiFunction : public Printer, public Scanner, public Faxer {
+public:
+    void print(const Document& document) override {
+        // Print implementation
+    }
+    
+    void scan(const Document& document) override {
+        // Scan implementation
+    }
+    
+    void fax(const Document& document) override {
+        // Fax implementation
+    }
+};
 ```
 
 ## 💡 Best Practices
@@ -397,6 +599,63 @@ public class Main {
     }
 }
 ```
+
+## ❓ Frequently Asked Questions
+
+### Q1: How small should interfaces be?
+**A:** There's no fixed number, but follow these guidelines:
+- Group methods that are always used together
+- If clients only use some methods, the interface is too big
+- Single-method interfaces are fine (especially for functional programming)
+- 3-5 cohesive methods is often a good size
+- Ask: "Would any client need only part of this interface?"
+
+### Q2: What's the difference between ISP and SRP?
+**A:**
+| Aspect | SRP | ISP |
+|--------|-----|-----|
+| Focus | Class responsibilities | Interface design |
+| Goal | One reason to change | Clients use what they need |
+| Level | Implementation | Contract/API |
+| Violation | Class does too much | Interface requires too much |
+
+They're complementary: SRP for implementations, ISP for interfaces.
+
+### Q3: How do I refactor a "fat interface"?
+**A:** Follow these steps:
+1. Identify groups of methods used together by clients
+2. Create smaller, focused interfaces for each group
+3. Have the original interface extend the smaller ones (if needed)
+4. Update clients to depend only on interfaces they use
+5. Update implementations to implement only needed interfaces
+
+### Q4: Can a class implement multiple interfaces?
+**A:** Yes! That's the power of ISP:
+- One class can implement many small interfaces
+- Different clients see only the interface they need
+- This is how you get the benefits of multiple inheritance safely
+- Example: `SmartPhone` implements `Callable`, `Camera`, `Browser`, `GPS`
+
+### Q5: What's a "role interface"?
+**A:** A role interface defines a specific role an object can play:
+- Named for the role, not the implementation: `Printable`, `Serializable`, `Comparable`
+- Focuses on what the object can *do* in a specific context
+- Clients depend on roles, not concrete types
+- A class can play multiple roles by implementing multiple interfaces
+
+### Q6: Does ISP apply to abstract classes?
+**A:** Yes, but differently:
+- Abstract classes can have state and implementations
+- You can't multiply inherit abstract classes (in most languages)
+- Prefer small interfaces + abstract base classes when needed
+- Example: Interface for contract, abstract class for shared implementation
+
+### Q7: How does ISP help with testing?
+**A:** Smaller interfaces make testing easier:
+- Mock only the methods you need
+- Test doubles are simpler to create
+- Tests are more focused and less brittle
+- Changes to unused methods don't break your tests
 
 ## 📚 Additional Resources
 

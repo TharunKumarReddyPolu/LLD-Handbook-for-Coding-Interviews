@@ -3,11 +3,36 @@
 ## 📝 Definition
 The Liskov Substitution Principle states that objects of a superclass should be replaceable with objects of its subclasses without affecting the correctness of the program. In other words, derived classes must be substitutable for their base classes.
 
+## 📚 Prerequisites & Learning Path
+
+### Prerequisites
+Before studying LSP, you should understand:
+- [SRP](srp.md) & [OCP](ocp.md) - Foundation of SOLID
+- [Inheritance](../ood-basics/inheritance.md) - Class hierarchies and extending behavior
+- [Polymorphism](../ood-basics/polymorphism.md) - Method overriding and dynamic dispatch
+- [Abstract Classes](../ood-basics/abstract-classes.md) - Partial implementations
+
+### Learning Path
+After mastering LSP, continue with:
+1. **Next:** [Interface Segregation Principle (ISP)](isp.md) - Focused interfaces
+2. **Then:** [Dependency Inversion Principle (DIP)](dip.md) - Depend on abstractions
+3. **Related:** [Factory Pattern](../design-patterns/creational/README.md) - Creating substitutable objects
+
+### How LSP Fits in the Big Picture
+```
+SRP → OCP → LSP → ISP → DIP
+             ↓
+LSP ensures inheritance hierarchies are correct
+Violations lead to unexpected runtime behavior
+```
+
 ## 🎯 Key Concepts
 
 ### 1. Behavioral Subtyping
 - Subclass methods should expect no more and provide no less than the base class
 - Maintain the contract defined by the base class
+
+#### Java
 ```java
 // Base class defining a contract
 public class Rectangle {
@@ -43,10 +68,68 @@ public class Square extends Rectangle {
 }
 ```
 
+#### Python
+```python
+# Base class defining a contract
+class Rectangle:
+    def __init__(self):
+        self._width = 0
+        self._height = 0
+    
+    def set_width(self, width: int) -> None:
+        self._width = width
+    
+    def set_height(self, height: int) -> None:
+        self._height = height
+    
+    def get_area(self) -> int:
+        return self._width * self._height
+
+# LSP violation
+class Square(Rectangle):
+    def set_width(self, width: int) -> None:
+        self._width = width
+        self._height = width  # Violates LSP
+    
+    def set_height(self, height: int) -> None:
+        self._height = height
+        self._width = height  # Violates LSP
+```
+
+#### C++
+```cpp
+// Base class defining a contract
+class Rectangle {
+protected:
+    int width;
+    int height;
+public:
+    virtual void setWidth(int w) { width = w; }
+    virtual void setHeight(int h) { height = h; }
+    int getArea() const { return width * height; }
+};
+
+// LSP violation
+class Square : public Rectangle {
+public:
+    void setWidth(int w) override {
+        width = w;
+        height = w;  // Violates LSP
+    }
+    
+    void setHeight(int h) override {
+        height = h;
+        width = h;  // Violates LSP
+    }
+};
+```
+
 ### 2. Contract Conditions
 1. **Preconditions** cannot be strengthened in a subtype
 2. **Postconditions** cannot be weakened in a subtype
 3. **Invariants** must be preserved in a subtype
+
+#### Java
 ```java
 public class Bird {
     public void fly() {
@@ -81,9 +164,81 @@ public class Penguin extends Bird {
 }
 ```
 
+#### Python
+```python
+from abc import ABC, abstractmethod
+
+class Bird:
+    def fly(self) -> None:
+        # Base implementation
+        pass
+
+# LSP violation - strengthens precondition
+class PenguinBad(Bird):
+    def fly(self) -> None:
+        raise NotImplementedError("Penguins can't fly")
+
+# Better design
+class FlyingBird(ABC):
+    @abstractmethod
+    def fly(self) -> None:
+        pass
+
+class Bird:
+    pass
+
+class Sparrow(Bird, FlyingBird):
+    def fly(self) -> None:
+        print("Sparrow flying")
+
+class Penguin(Bird):
+    # No fly method
+    pass
+```
+
+#### C++
+```cpp
+class Bird {
+public:
+    virtual void fly() {
+        // Base implementation
+    }
+};
+
+// LSP violation - strengthens precondition
+class PenguinBad : public Bird {
+public:
+    void fly() override {
+        throw std::runtime_error("Penguins can't fly");
+    }
+};
+
+// Better design
+class FlyingBird {
+public:
+    virtual ~FlyingBird() = default;
+    virtual void fly() = 0;
+};
+
+class Bird { };
+
+class Sparrow : public Bird, public FlyingBird {
+public:
+    void fly() override {
+        // Implementation
+    }
+};
+
+class Penguin : public Bird {
+    // No fly method
+};
+```
+
 ## 💡 Best Practices
 
 1. **Design by Contract**
+
+   #### Java
    ```java
    public interface Account {
        void withdraw(double amount);
@@ -117,7 +272,75 @@ public class Penguin extends Bird {
    }
    ```
 
+   #### Python
+   ```python
+   from abc import ABC, abstractmethod
+
+   class Account(ABC):
+       @abstractmethod
+       def withdraw(self, amount: float) -> None: pass
+       
+       @abstractmethod
+       def deposit(self, amount: float) -> None: pass
+       
+       @abstractmethod
+       def get_balance(self) -> float: pass
+
+   class SavingsAccount(Account):
+       def __init__(self):
+           self._balance = 0.0
+       
+       def withdraw(self, amount: float) -> None:
+           if amount <= self._balance:
+               self._balance -= amount
+           else:
+               raise InsufficientFundsException()
+       
+       def deposit(self, amount: float) -> None:
+           if amount > 0:
+               self._balance += amount
+       
+       def get_balance(self) -> float:
+           return self._balance
+   ```
+
+   #### C++
+   ```cpp
+   class Account {
+   public:
+       virtual ~Account() = default;
+       virtual void withdraw(double amount) = 0;
+       virtual void deposit(double amount) = 0;
+       virtual double getBalance() const = 0;
+   };
+
+   class SavingsAccount : public Account {
+   private:
+       double balance = 0.0;
+   public:
+       void withdraw(double amount) override {
+           if (amount <= balance) {
+               balance -= amount;
+           } else {
+               throw InsufficientFundsException();
+           }
+       }
+       
+       void deposit(double amount) override {
+           if (amount > 0) {
+               balance += amount;
+           }
+       }
+       
+       double getBalance() const override {
+           return balance;
+       }
+   };
+   ```
+
 2. **Use Abstract Classes Correctly**
+
+   #### Java
    ```java
    public abstract class Vehicle {
        protected int speed;
@@ -145,7 +368,64 @@ public class Penguin extends Bird {
    }
    ```
 
+   #### Python
+   ```python
+   from abc import ABC, abstractmethod
+
+   class Vehicle(ABC):
+       def __init__(self):
+           self._speed = 0
+       
+       @abstractmethod
+       def accelerate(self) -> None:
+           pass
+       
+       # Common behavior
+       def stop(self) -> None:
+           self._speed = 0
+
+   class Car(Vehicle):
+       def accelerate(self) -> None:
+           self._speed += 10
+
+   class Bicycle(Vehicle):
+       def accelerate(self) -> None:
+           self._speed += 5
+   ```
+
+   #### C++
+   ```cpp
+   class Vehicle {
+   protected:
+       int speed = 0;
+   public:
+       virtual ~Vehicle() = default;
+       virtual void accelerate() = 0;
+       
+       // Common behavior
+       void stop() {
+           speed = 0;
+       }
+   };
+
+   class Car : public Vehicle {
+   public:
+       void accelerate() override {
+           speed += 10;
+       }
+   };
+
+   class Bicycle : public Vehicle {
+   public:
+       void accelerate() override {
+           speed += 5;
+       }
+   };
+   ```
+
 3. **Factory Method Pattern**
+
+   #### Java
    ```java
    public abstract class DocumentConverter {
        public final void convert(String input) {
@@ -166,6 +446,56 @@ public class Penguin extends Bird {
            // Common save logic
        }
    }
+   ```
+
+   #### Python
+   ```python
+   from abc import ABC, abstractmethod
+
+   class DocumentConverter(ABC):
+       def convert(self, input: str) -> None:
+           self._validate_input(input)
+           self._do_conversion(input)
+           self._save_result()
+       
+       @abstractmethod
+       def _do_conversion(self, input: str) -> None:
+           pass
+       
+       def _validate_input(self, input: str) -> None:
+           if not input:
+               raise ValueError("Input cannot be empty")
+       
+       def _save_result(self) -> None:
+           # Common save logic
+           pass
+   ```
+
+   #### C++
+   ```cpp
+   class DocumentConverter {
+   public:
+       virtual ~DocumentConverter() = default;
+       
+       void convert(const std::string& input) {
+           validateInput(input);
+           doConversion(input);
+           saveResult();
+       }
+       
+   protected:
+       virtual void doConversion(const std::string& input) = 0;
+       
+       virtual void validateInput(const std::string& input) {
+           if (input.empty()) {
+               throw std::invalid_argument("Input cannot be empty");
+           }
+       }
+       
+       virtual void saveResult() {
+           // Common save logic
+       }
+   };
    ```
 
 ## ⚠️ Common Pitfalls
@@ -378,6 +708,51 @@ public class Main {
     }
 }
 ```
+
+## ❓ Frequently Asked Questions
+
+### Q1: What's the classic Rectangle-Square problem?
+**A:** It's the most famous LSP violation:
+- Mathematically, a Square is a Rectangle
+- But in code, `Square extends Rectangle` violates LSP
+- `Rectangle.setWidth()` and `setHeight()` are independent
+- `Square` must keep width == height, breaking the Rectangle contract
+- Solution: Don't use inheritance; use a common `Shape` interface
+
+### Q2: How do I know if I'm violating LSP?
+**A:** Watch for these signs:
+- Subclass throws exceptions the base class doesn't
+- Subclass ignores or overrides parent methods with empty implementations
+- Client code checks the type before calling methods
+- Subclass weakens postconditions or strengthens preconditions
+- Unit tests for parent class fail when run with subclass instances
+
+### Q3: What are preconditions and postconditions?
+**A:**
+- **Preconditions:** What must be true *before* a method runs (input requirements)
+- **Postconditions:** What will be true *after* a method runs (guaranteed outcomes)
+- **LSP rule:** Subclass preconditions ≤ parent; subclass postconditions ≥ parent
+
+### Q4: Can I throw different exceptions in a subclass?
+**A:** It depends:
+- ✅ OK: Throw more specific exceptions (subclass of parent's exception)
+- ❌ Not OK: Throw new exception types the parent doesn't declare
+- ❌ Not OK: Throw exceptions when parent method doesn't throw any
+- The key is: client code expecting parent behavior shouldn't be surprised
+
+### Q5: How does LSP relate to "favor composition over inheritance"?
+**A:** LSP violations often indicate inheritance is the wrong choice:
+- If subclass can't fully substitute for parent, don't use inheritance
+- Use composition instead: "has-a" rather than "is-a"
+- Interfaces can still provide polymorphism without inheritance hierarchy
+- Example: Instead of `Square extends Rectangle`, both implement `Shape`
+
+### Q6: What's the difference between LSP and "is-a" relationship?
+**A:**
+- **"Is-a"** is often misunderstood as just conceptual similarity
+- **LSP** is about *behavioral* substitutability in code
+- A Square "is-a" Rectangle mathematically, but not behaviorally in OOP
+- Always ask: "Can I use subclass everywhere parent is expected without issues?"
 
 ## 📚 Additional Resources
 

@@ -2,6 +2,47 @@
 
 Structural patterns explain how to assemble objects and classes into larger structures while keeping these structures flexible and efficient.
 
+## 📚 Prerequisites & Learning Path
+
+### Prerequisites
+Before studying Structural Patterns, you should understand:
+- [Creational Patterns](../creational/README.md) - Object creation basics
+- [Interfaces](../../ood-basics/interfaces.md) - Contract-based design
+- [Relationships](../../ood-basics/relationships.md) - Composition & Aggregation
+- [SOLID Principles](../../solid-principles/README.md) - Especially OCP and ISP
+
+### Recommended Study Order
+```
+1. Adapter (Interface compatibility)
+         ↓
+2. Decorator (Dynamic behavior addition)
+         ↓
+3. Facade (Simplify complex systems)
+         ↓
+4. Composite (Tree structures)
+         ↓
+5. Proxy (Access control)
+         ↓
+6. Bridge & Flyweight (Advanced)
+```
+
+### Learning Path
+After Structural Patterns, continue with:
+1. **Next:** [Behavioral Patterns](../behavioral/README.md) - Object communication
+2. **Apply:** [Medium Interview Questions](../../interview-questions/medium/README.md) - Practice problems
+3. **Advanced:** [Hard Interview Questions](../../interview-questions/hard/README.md) - Complex systems
+
+### Pattern Selection Guide
+| Problem | Pattern | Why |
+|---------|---------|-----|
+| Incompatible interfaces | Adapter | Makes them compatible |
+| Add behavior without subclassing | Decorator | Runtime composition |
+| Complex subsystem | Facade | Simple unified interface |
+| Tree/hierarchical structures | Composite | Uniform treatment |
+| Control object access | Proxy | Add indirection layer |
+| Decouple abstraction from impl | Bridge | Independent variation |
+| Many similar objects | Flyweight | Share common state |
+
 ## Overview
 
 ```mermaid
@@ -75,6 +116,8 @@ graph TD
 ## Implementation Guidelines
 
 ### Adapter
+
+#### Java
 ```java
 // Target interface
 public interface MediaPlayer {
@@ -98,6 +141,55 @@ public class MediaAdapter implements MediaPlayer {
         }
     }
 }
+```
+
+#### Python
+```python
+from abc import ABC, abstractmethod
+
+# Target interface
+class MediaPlayer(ABC):
+    @abstractmethod
+    def play(self, audio_type: str, file_name: str) -> None:
+        pass
+
+# Adapter
+class MediaAdapter(MediaPlayer):
+    def __init__(self, audio_type: str):
+        if audio_type.lower() == "vlc":
+            self._advanced_player = VlcPlayer()
+    
+    def play(self, audio_type: str, file_name: str) -> None:
+        if audio_type.lower() == "vlc":
+            self._advanced_player.play_vlc(file_name)
+```
+
+#### C++
+```cpp
+// Target interface
+class MediaPlayer {
+public:
+    virtual ~MediaPlayer() = default;
+    virtual void play(const std::string& audioType, const std::string& fileName) = 0;
+};
+
+// Adapter
+class MediaAdapter : public MediaPlayer {
+private:
+    std::unique_ptr<AdvancedMediaPlayer> advancedMusicPlayer;
+public:
+    MediaAdapter(const std::string& audioType) {
+        if (audioType == "vlc") {
+            advancedMusicPlayer = std::make_unique<VlcPlayer>();
+        }
+    }
+    
+    void play(const std::string& audioType, const std::string& fileName) override {
+        if (audioType == "vlc") {
+            advancedMusicPlayer->playVlc(fileName);
+        }
+    }
+};
 ```
 
 ### Bridge
@@ -178,6 +270,8 @@ public class Directory extends FileSystemNode {
 ```
 
 ### Decorator
+
+#### Java
 ```java
 // Component
 public interface Coffee {
@@ -233,6 +327,87 @@ public class Milk extends CoffeeDecorator {
         return super.getDescription() + ", milk";
     }
 }
+```
+
+#### Python
+```python
+from abc import ABC, abstractmethod
+
+# Component
+class Coffee(ABC):
+    @abstractmethod
+    def get_cost(self) -> float: pass
+    
+    @abstractmethod
+    def get_description(self) -> str: pass
+
+# Concrete Component
+class SimpleCoffee(Coffee):
+    def get_cost(self) -> float:
+        return 1.0
+    
+    def get_description(self) -> str:
+        return "Simple coffee"
+
+# Decorator
+class CoffeeDecorator(Coffee):
+    def __init__(self, coffee: Coffee):
+        self._decorated_coffee = coffee
+    
+    def get_cost(self) -> float:
+        return self._decorated_coffee.get_cost()
+    
+    def get_description(self) -> str:
+        return self._decorated_coffee.get_description()
+
+# Concrete Decorator
+class Milk(CoffeeDecorator):
+    def get_cost(self) -> float:
+        return super().get_cost() + 0.5
+    
+    def get_description(self) -> str:
+        return super().get_description() + ", milk"
+```
+
+#### C++
+```cpp
+// Component
+class Coffee {
+public:
+    virtual ~Coffee() = default;
+    virtual double getCost() const = 0;
+    virtual std::string getDescription() const = 0;
+};
+
+// Concrete Component
+class SimpleCoffee : public Coffee {
+public:
+    double getCost() const override { return 1.0; }
+    std::string getDescription() const override { return "Simple coffee"; }
+};
+
+// Decorator
+class CoffeeDecorator : public Coffee {
+protected:
+    std::unique_ptr<Coffee> decoratedCoffee;
+public:
+    CoffeeDecorator(std::unique_ptr<Coffee> coffee) 
+        : decoratedCoffee(std::move(coffee)) {}
+    
+    double getCost() const override { return decoratedCoffee->getCost(); }
+    std::string getDescription() const override { return decoratedCoffee->getDescription(); }
+};
+
+// Concrete Decorator
+class Milk : public CoffeeDecorator {
+public:
+    Milk(std::unique_ptr<Coffee> coffee) : CoffeeDecorator(std::move(coffee)) {}
+    
+    double getCost() const override { return decoratedCoffee->getCost() + 0.5; }
+    std::string getDescription() const override { 
+        return decoratedCoffee->getDescription() + ", milk"; 
+    }
+};
 ```
 
 ### Facade
@@ -418,6 +593,67 @@ public class ProxyImage implements Image {
 7. **Proxy Overuse**
    - Adding proxies unnecessarily
    - Solution: Use proxies only when control or lazy loading is needed
+
+## ❓ Frequently Asked Questions
+
+### Q1: What's the difference between Adapter and Facade?
+**A:**
+| Adapter | Facade |
+|---------|--------|
+| Makes ONE interface work with another | Simplifies MANY interfaces |
+| Converts interface | Unifies interface |
+| Typically wraps one class | Wraps entire subsystem |
+| For incompatible interfaces | For simplification |
+
+### Q2: When should I use Decorator vs inheritance?
+**A:**
+| Use Decorator | Use Inheritance |
+|--------------|-----------------|
+| Add behavior dynamically | Behavior is fixed at compile time |
+| Multiple combinations needed | Single behavior variation |
+| Want to avoid subclass explosion | Few subclasses needed |
+| Honor single responsibility | Want simpler code |
+
+### Q3: What's the difference between Proxy and Decorator?
+**A:**
+| Proxy | Decorator |
+|-------|-----------|
+| Controls access | Adds behavior |
+| Same interface, different purpose | Same interface, enhanced behavior |
+| Security, lazy loading, caching | Additional functionality |
+| Often manages lifecycle | Wraps existing behavior |
+
+### Q4: When is Composite pattern useful?
+**A:** Use for tree structures:
+- File system (folders contain files and folders)
+- UI components (containers contain components)
+- Organization hierarchies
+- Expression trees
+- Menu systems
+
+### Q5: What's the Bridge pattern really about?
+**A:** Separating abstraction from implementation:
+- **Without Bridge:** Shape subclasses × Color subclasses = explosion
+- **With Bridge:** Shape has Color, both vary independently
+- Use when both dimensions change independently
+- Avoids N×M class combinations
+
+### Q6: When should I use Flyweight?
+**A:** When you have:
+- Thousands of similar objects
+- Objects share intrinsic state
+- Extrinsic state can be external
+- Memory is a concern
+- Examples: Characters in text editor, trees in game
+
+### Q7: What types of Proxy are there?
+**A:**
+| Type | Purpose | Example |
+|------|---------|---------|
+| Virtual Proxy | Lazy loading | Load image when displayed |
+| Protection Proxy | Access control | Permission checking |
+| Remote Proxy | Remote objects | RPC, web services |
+| Caching Proxy | Cache results | Database query cache |
 
 ## Additional Resources
 - [Adapter Pattern](https://refactoring.guru/design-patterns/adapter)

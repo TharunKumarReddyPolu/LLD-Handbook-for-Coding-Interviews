@@ -2,6 +2,62 @@
 
 This section contains intermediate-level LLD interview questions that focus on more complex design patterns and system interactions.
 
+## 📚 Prerequisites & Learning Path
+
+### Prerequisites
+Before attempting Medium questions, ensure you have mastered:
+- [Easy Questions](../easy/README.md) - Complete all easy problems first
+- [All SOLID Principles](../../solid-principles/README.md) - All five principles
+- [Design Patterns](../../design-patterns/README.md) - Core patterns from each category
+- [Interfaces](../../ood-basics/interfaces.md) - Contract-based design
+- [Relationships](../../ood-basics/relationships.md) - Composition & Aggregation
+
+### Recommended Patterns to Know
+| Pattern | Used In |
+|---------|---------|
+| Strategy | Eviction policies, scheduling algorithms |
+| Observer | Event notification, pub-sub |
+| Factory | Object creation with logic |
+| Decorator | Dynamic behavior addition |
+| Command | Task encapsulation |
+| Template Method | Algorithm skeletons |
+
+### Key Concepts for Medium Level
+- Thread safety and concurrency
+- Resource management (pooling)
+- Caching strategies
+- Queue-based processing
+- Rate limiting algorithms
+
+### Interview Approach
+```
+1. Clarify Requirements & Scale (3-5 min)
+         ↓
+2. Identify Components & Interactions (5-7 min)
+         ↓
+3. Design Class Hierarchy & Interfaces (5-7 min)
+         ↓
+4. Implement Core Logic with Patterns (15-20 min)
+         ↓
+5. Address Concurrency & Edge Cases (5-7 min)
+         ↓
+6. Discuss Scalability & Improvements (5 min)
+```
+
+### Learning Path
+| Level | Focus | Time Estimate |
+|-------|-------|---------------|
+| [Easy](../easy/README.md) | OOP basics, simple patterns | 1-2 weeks |
+| 📍 Medium (You're here) | Complex patterns, concurrency | 2-3 weeks |
+| [Hard](../hard/README.md) | Distributed systems, architecture | 3-4 weeks |
+
+### Tips for Medium Questions
+- Think about thread safety early
+- Use design patterns appropriately
+- Consider extensibility (OCP)
+- Handle failure scenarios
+- Discuss trade-offs
+
 ## Questions List
 
 1. [Design a Task Scheduler](#design-a-task-scheduler)
@@ -20,6 +76,8 @@ This section contains intermediate-level LLD interview questions that focus on m
 - Provide task status tracking
 
 ### Example Solution
+
+#### Java
 ```java
 public class Task {
     private String id;
@@ -83,6 +141,111 @@ public class TaskScheduler {
         });
     }
 }
+```
+
+#### Python
+```python
+from dataclasses import dataclass, field
+from datetime import datetime, timedelta
+from enum import Enum
+from typing import Set, Dict, Optional
+import heapq
+from concurrent.futures import ThreadPoolExecutor
+
+class TaskStatus(Enum):
+    PENDING = "PENDING"
+    RUNNING = "RUNNING"
+    COMPLETED = "COMPLETED"
+    FAILED = "FAILED"
+
+@dataclass
+class Task:
+    id: str
+    name: str
+    priority: int
+    scheduled_time: datetime
+    interval: Optional[timedelta] = None
+    dependencies: Set['Task'] = field(default_factory=set)
+    status: TaskStatus = TaskStatus.PENDING
+    
+    def can_execute(self) -> bool:
+        return all(task.status == TaskStatus.COMPLETED 
+                   for task in self.dependencies)
+    
+    def __lt__(self, other):
+        if self.priority != other.priority:
+            return self.priority > other.priority
+        return self.scheduled_time < other.scheduled_time
+
+class TaskScheduler:
+    def __init__(self, thread_pool_size: int):
+        self._task_queue: list = []
+        self._tasks: Dict[str, Task] = {}
+        self._executor = ThreadPoolExecutor(max_workers=thread_pool_size)
+    
+    def schedule_task(self, task: Task) -> None:
+        self._tasks[task.id] = task
+        heapq.heappush(self._task_queue, task)
+    
+    def _execute_task(self, task: Task) -> None:
+        try:
+            task.execute()
+            if task.interval:
+                task.scheduled_time += task.interval
+                heapq.heappush(self._task_queue, task)
+        except Exception as e:
+            self._handle_task_error(task, e)
+```
+
+#### C++
+```cpp
+#include <queue>
+#include <unordered_map>
+#include <thread>
+#include <chrono>
+#include <functional>
+
+enum class TaskStatus { PENDING, RUNNING, COMPLETED, FAILED };
+
+struct Task {
+    std::string id;
+    std::string name;
+    int priority;
+    std::chrono::system_clock::time_point scheduledTime;
+    std::set<Task*> dependencies;
+    TaskStatus status = TaskStatus::PENDING;
+    
+    bool canExecute() const {
+        for (const auto* dep : dependencies) {
+            if (dep->status != TaskStatus::COMPLETED) return false;
+        }
+        return true;
+    }
+    
+    bool operator<(const Task& other) const {
+        if (priority != other.priority) return priority < other.priority;
+        return scheduledTime > other.scheduledTime;
+    }
+};
+
+class TaskScheduler {
+private:
+    std::priority_queue<Task> taskQueue;
+    std::unordered_map<std::string, Task> tasks;
+    std::vector<std::thread> workers;
+    
+public:
+    TaskScheduler(int threadPoolSize) {
+        for (int i = 0; i < threadPoolSize; ++i) {
+            workers.emplace_back(&TaskScheduler::workerThread, this);
+        }
+    }
+    
+    void scheduleTask(const Task& task) {
+        tasks[task.id] = task;
+        taskQueue.push(task);
+    }
+};
 ```
 
 ### Key Points
@@ -358,6 +521,71 @@ public class ConnectionPool {
 - Strategy pattern for validation
 - Timeout handling
 - Connection lifecycle management
+
+## ❓ Frequently Asked Questions
+
+### Q1: How do I handle concurrency in LLD problems?
+**A:** Common approaches:
+| Technique | When to Use |
+|-----------|-------------|
+| synchronized/locks | Shared mutable state |
+| Concurrent collections | Thread-safe data structures |
+| Atomic variables | Simple counters/flags |
+| Producer-consumer | Task queues |
+| Read-write locks | Read-heavy scenarios |
+
+### Q2: When should I use a queue vs direct method calls?
+**A:** Use queues when:
+- Producer and consumer work at different speeds
+- Need to handle backpressure
+- Want async/non-blocking behavior
+- Need persistence/durability
+- Want to decouple components
+
+### Q3: How do I design for extensibility?
+**A:** Apply these principles:
+- Define interfaces for variable behavior
+- Use composition over inheritance
+- Apply Strategy pattern for algorithms
+- Follow Open/Closed Principle
+- Inject dependencies
+
+### Q4: How detailed should my solution be?
+**A:** Medium problems require:
+- Complete class structure
+- Key algorithms implemented
+- Thread safety considerations
+- Error handling
+- Trade-off discussions
+- Extensibility points identified
+
+### Q5: How do I choose between different caching strategies?
+**A:**
+| Strategy | When to Use |
+|----------|-------------|
+| LRU | General purpose, access recency matters |
+| LFU | Access frequency matters |
+| TTL | Time-sensitive data |
+| Write-through | Strong consistency needed |
+| Write-behind | Performance priority |
+
+### Q6: What's the difference between these problems and system design?
+**A:**
+| LLD (Low Level Design) | System Design |
+|----------------------|---------------|
+| Class/code level | Architecture level |
+| Single process | Distributed systems |
+| OOP, patterns | Scalability, reliability |
+| Implementation focus | Component interaction |
+| Write actual code | Draw diagrams |
+
+### Q7: How do I handle time-based features (timeouts, scheduling)?
+**A:** Options:
+- ScheduledExecutorService (Java)
+- Timer threads
+- Delay queues
+- External schedulers (cron, Quartz)
+- Mention trade-offs of each approach
 
 ## Additional Resources
 - [Design Patterns](../../design-patterns/README.md)

@@ -5,11 +5,36 @@ The Dependency Inversion Principle states that:
 1. High-level modules should not depend on low-level modules. Both should depend on abstractions.
 2. Abstractions should not depend on details. Details should depend on abstractions.
 
+## 📚 Prerequisites & Learning Path
+
+### Prerequisites
+Before studying DIP, you should understand:
+- [All Previous SOLID Principles](srp.md) - SRP, OCP, LSP, ISP
+- [Interfaces](../ood-basics/interfaces.md) - Defining abstractions
+- [Abstraction](../ood-basics/abstraction.md) - Hiding implementation details
+- [Relationships](../ood-basics/relationships.md) - Association, Aggregation, Composition
+
+### Learning Path
+After mastering DIP, continue with:
+1. **Next:** [Design Patterns Overview](../design-patterns/README.md) - Apply SOLID in real patterns
+2. **Then:** [Creational Patterns](../design-patterns/creational/README.md) - Factory, Builder for DI
+3. **Related:** [Testing Strategies](../best-practices/testing.md) - DIP enables testability
+
+### How DIP Fits in the Big Picture
+```
+SRP → OCP → LSP → ISP → DIP → Design Patterns
+                         ↓
+DIP is the culmination of SOLID principles
+Enables: Testability, Flexibility, Loose Coupling
+```
+
 ## 🎯 Key Concepts
 
 ### 1. Dependency on Abstractions
 - Use interfaces and abstract classes instead of concrete implementations
 - Decouple high-level and low-level modules
+
+#### Java
 ```java
 // Bad - Direct dependency on concrete class
 public class OrderService {
@@ -35,9 +60,58 @@ public class OrderService {
 }
 ```
 
+#### Python
+```python
+from abc import ABC, abstractmethod
+
+# Bad - Direct dependency on concrete class
+class OrderServiceBad:
+    def __init__(self):
+        self._database = MySQLDatabase()  # Concrete dependency
+
+# Good - Depends on abstraction
+class Database(ABC):
+    @abstractmethod
+    def save(self, data: object) -> None: pass
+    
+    @abstractmethod
+    def find(self, id: str) -> object: pass
+
+class OrderService:
+    def __init__(self, database: Database):  # Interface dependency
+        self._database = database
+```
+
+#### C++
+```cpp
+// Bad - Direct dependency on concrete class
+class OrderServiceBad {
+private:
+    MySQLDatabase database;  // Concrete dependency
+};
+
+// Good - Depends on abstraction
+class Database {
+public:
+    virtual ~Database() = default;
+    virtual void save(const void* data) = 0;
+    virtual void* find(const std::string& id) = 0;
+};
+
+class OrderService {
+private:
+    std::unique_ptr<Database> database;  // Interface dependency
+public:
+    OrderService(std::unique_ptr<Database> db) 
+        : database(std::move(db)) {}
+};
+```
+
 ### 2. Inversion of Control (IoC)
 - Control is inverted from high-level modules to a container/framework
 - Dependencies are injected rather than created internally
+
+#### Java
 ```java
 // Dependency Injection Container
 public class Container {
@@ -60,6 +134,71 @@ container.register(EmailService.class, new SMTPEmailService());
 OrderService orderService = new OrderService(
     container.resolve(Database.class),
     container.resolve(EmailService.class)
+);
+```
+
+#### Python
+```python
+from typing import Dict, Type, TypeVar, Any
+
+T = TypeVar('T')
+
+# Dependency Injection Container
+class Container:
+    def __init__(self):
+        self._dependencies: Dict[Type, Any] = {}
+    
+    def register(self, type_class: Type, implementation: Any) -> None:
+        self._dependencies[type_class] = implementation
+    
+    def resolve(self, type_class: Type[T]) -> T:
+        return self._dependencies.get(type_class)
+
+# Usage
+container = Container()
+container.register(Database, MySQLDatabase())
+container.register(EmailService, SMTPEmailService())
+
+order_service = OrderService(
+    container.resolve(Database),
+    container.resolve(EmailService)
+)
+```
+
+#### C++
+```cpp
+#include <unordered_map>
+#include <typeindex>
+#include <any>
+
+// Dependency Injection Container
+class Container {
+private:
+    std::unordered_map<std::type_index, std::any> dependencies;
+public:
+    template<typename T>
+    void registerType(T* implementation) {
+        dependencies[std::type_index(typeid(T))] = implementation;
+    }
+    
+    template<typename T>
+    T* resolve() {
+        auto it = dependencies.find(std::type_index(typeid(T)));
+        if (it != dependencies.end()) {
+            return std::any_cast<T*>(it->second);
+        }
+        return nullptr;
+    }
+};
+
+// Usage
+Container container;
+container.registerType<Database>(new MySQLDatabase());
+container.registerType<EmailService>(new SMTPEmailService());
+
+auto orderService = std::make_unique<OrderService>(
+    container.resolve<Database>(),
+    container.resolve<EmailService>()
 );
 ```
 
@@ -361,6 +500,77 @@ public class Main {
     }
 }
 ```
+
+## ❓ Frequently Asked Questions
+
+### Q1: What's the difference between DIP and Dependency Injection?
+**A:**
+| Concept | What It Is |
+|---------|-----------|
+| **DIP (Principle)** | High-level modules shouldn't depend on low-level modules; both depend on abstractions |
+| **DI (Pattern)** | A technique to achieve DIP by injecting dependencies from outside |
+| **IoC Container** | A framework that manages DI automatically |
+
+DIP is the *why*, DI is the *how*.
+
+### Q2: What are the types of Dependency Injection?
+**A:** Three main types:
+```
+1. Constructor Injection (Preferred)
+   - Dependencies passed via constructor
+   - Makes dependencies explicit and required
+   
+2. Setter Injection
+   - Dependencies set via setter methods
+   - Good for optional dependencies
+   
+3. Interface Injection
+   - Class implements an interface that injects dependencies
+   - Less common, more complex
+```
+
+### Q3: Why is Constructor Injection preferred?
+**A:**
+- Makes dependencies explicit and visible
+- Ensures object is fully initialized
+- Supports immutability (final fields)
+- Makes testing easier (just pass mocks)
+- Fails fast if dependencies are missing
+
+### Q4: What's Inversion of Control (IoC)?
+**A:** IoC is a broader principle where control is inverted:
+- **Traditional:** Your code calls library code
+- **IoC:** Framework calls your code
+- DIP is a specific type of IoC for dependencies
+- Examples: Spring Framework, event handlers, plugin architectures
+
+### Q5: How does DIP help with testing?
+**A:** DIP makes code testable by:
+- Allowing mock/stub injection for dependencies
+- Isolating units for true unit testing
+- Removing hard-coded dependencies on databases, APIs, etc.
+- Enabling fast tests without external systems
+
+```java
+// Easy to test with mock
+UserService service = new UserService(mockRepository, mockEmailSender);
+```
+
+### Q6: Can DIP be overused?
+**A:** Yes, avoid these anti-patterns:
+- Creating abstractions for everything (even simple utilities)
+- One-to-one interface-to-implementation mapping without purpose
+- Deep abstraction layers that add complexity without flexibility
+- Abstracting stable, rarely-changing components
+
+### Q7: What should I abstract and what shouldn't I?
+**A:**
+| Abstract (Create Interface) | Don't Abstract |
+|---------------------------|----------------|
+| External services (DB, API, Email) | Simple utilities (string, math) |
+| Components likely to change | Stable framework classes |
+| Components needing multiple implementations | Internal implementation details |
+| Components needing mocking | Value objects |
 
 ## 📚 Additional Resources
 

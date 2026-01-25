@@ -4,6 +4,39 @@
 
 Design patterns are typical solutions to common problems in software design. Each pattern is like a blueprint that you can customize to solve a particular design problem in your code.
 
+## 📚 Prerequisites & Learning Path
+
+### Prerequisites
+Before studying Design Patterns, you should have solid understanding of:
+- [OOD Basics](../ood-basics/README.md) - All four pillars of OOP
+- [SOLID Principles](../solid-principles/README.md) - All five principles
+- [Interfaces](../ood-basics/interfaces.md) - Contract-based design
+- [Relationships](../ood-basics/relationships.md) - Composition and Aggregation
+
+### Recommended Learning Order
+```
+1. Start with OOD Basics (if not already done)
+         ↓
+2. Master SOLID Principles
+         ↓
+3. Creational Patterns → Structural Patterns → Behavioral Patterns
+         ↓
+4. Apply patterns in Interview Questions
+```
+
+### Study Strategy
+| Category | Start With | Why |
+|----------|-----------|-----|
+| Creational | Factory Method, Singleton | Most commonly used |
+| Structural | Adapter, Decorator | Solve common problems |
+| Behavioral | Strategy, Observer | Enable flexible designs |
+
+### After This Section
+Apply your knowledge with:
+1. [Interview Questions - Easy](../interview-questions/easy/README.md)
+2. [Interview Questions - Medium](../interview-questions/medium/README.md)
+3. [Interview Questions - Hard](../interview-questions/hard/README.md)
+
 ## Pattern Categories
 
 ### [🏭 Creational Patterns](creational/README.md)
@@ -122,6 +155,61 @@ graph TD
     O --> W[Template Method]
     O --> X[Visitor]
 ```
+
+## ❓ Frequently Asked Questions
+
+### Q1: How many design patterns should I know for interviews?
+**A:** Focus on these essentials:
+| Must Know | Good to Know | Nice to Know |
+|-----------|--------------|--------------|
+| Factory, Singleton | Abstract Factory, Prototype | Flyweight |
+| Strategy, Observer | Command, State | Visitor, Mediator |
+| Adapter, Decorator | Facade, Composite | Bridge, Chain |
+
+### Q2: When should I use a design pattern?
+**A:** Use patterns when:
+- ✅ You recognize a recurring problem the pattern solves
+- ✅ The complexity is justified by flexibility benefits
+- ✅ Multiple team members understand the pattern
+- ❌ Don't use to show off or add unnecessary abstraction
+- ❌ Don't use for simple one-off solutions
+
+### Q3: What's the difference between pattern categories?
+**A:**
+| Category | Focus | Examples |
+|----------|-------|----------|
+| **Creational** | Object creation | Factory, Builder, Singleton |
+| **Structural** | Object composition | Adapter, Decorator, Facade |
+| **Behavioral** | Object interaction | Strategy, Observer, Command |
+
+### Q4: How do I choose between similar patterns?
+**A:** Common confusions:
+- **Factory vs Builder:** Factory for simple creation, Builder for complex multi-step
+- **Strategy vs State:** Strategy for algorithms, State for behavior based on object state
+- **Adapter vs Facade:** Adapter makes one interface compatible, Facade simplifies complex subsystem
+- **Decorator vs Proxy:** Decorator adds behavior, Proxy controls access
+
+### Q5: Can I combine multiple patterns?
+**A:** Yes! Common combinations:
+- Factory + Singleton (single factory instance)
+- Strategy + Factory (create strategies dynamically)
+- Observer + Command (undoable notifications)
+- Composite + Visitor (operations on trees)
+
+### Q6: Are design patterns language-specific?
+**A:** Core concepts are universal, but implementation varies:
+- Some patterns are built into languages (Iterator in Java/Python)
+- Some are less needed (Strategy with first-class functions)
+- Syntax differs (interfaces in Java vs ABC in Python)
+- Always adapt to language idioms
+
+### Q7: How do I practice design patterns?
+**A:**
+1. Implement each pattern from scratch
+2. Identify patterns in existing codebases
+3. Solve LLD problems using patterns
+4. Refactor your code to use appropriate patterns
+5. Explain patterns to others (rubber duck debugging)
 
 ## Additional Resources
 - [Design Patterns: Elements of Reusable Object-Oriented Software](https://www.amazon.com/Design-Patterns-Elements-Reusable-Object-Oriented/dp/0201633612)

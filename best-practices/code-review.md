@@ -9,6 +9,39 @@
 - [Code Review Checklist](#code-review-checklist)
 - [Best Practices](#best-practices)
 
+## 📚 Prerequisites & Learning Path
+
+### Prerequisites
+To effectively review code, you should understand:
+- [Clean Code Guidelines](clean-code.md) - What makes code clean
+- [SOLID Principles](../solid-principles/srp.md) - Design principles to look for
+- [Design Patterns](../design-patterns/README.md) - Pattern recognition
+- [Error Handling](error-handling.md) - Proper exception handling
+- [Testing](testing.md) - Test coverage expectations
+
+### When to Study This
+Code review skills are **essential for interviews** and professional work:
+- Study after understanding OOD Basics and SOLID
+- Practice reviewing your own code first
+- Apply during interview mock sessions
+
+### How This Relates to Interviews
+| Interview Aspect | How Code Review Helps |
+|-----------------|----------------------|
+| Design discussions | Articulate design trade-offs |
+| Code quality | Explain clean code principles |
+| Communication | Practice giving constructive feedback |
+| System design | Identify patterns and anti-patterns |
+
+### How This Fits in the Big Picture
+```
+Technical Skills: OOD → SOLID → Patterns → Clean Code
+                                              ↓
+Soft Skills:                           Code Review
+                                              ↓
+                              Combine both for interview success
+```
+
 ## Introduction
 
 Code reviews are a systematic examination of code changes to improve code quality, share knowledge, and ensure consistency across the codebase. This guide provides best practices for both reviewers and authors.
@@ -177,6 +210,70 @@ graph TD
     G --> A
     F -->|No| H[Approve & Merge]
 ```
+
+## ❓ Frequently Asked Questions
+
+### Q1: How long should a code review take?
+**A:** Guidelines:
+| PR Size | Review Time |
+|---------|-------------|
+| < 200 lines | 15-30 minutes |
+| 200-400 lines | 30-60 minutes |
+| > 400 lines | Consider splitting |
+
+**Tip:** Keep PRs small for faster, better reviews.
+
+### Q2: What should I prioritize in a review?
+**A:** Review in this order:
+1. **Correctness** - Does it work? Edge cases?
+2. **Security** - Vulnerabilities? Input validation?
+3. **Design** - SOLID principles? Patterns?
+4. **Performance** - Obvious issues?
+5. **Style** - Should be automated (linters)
+
+### Q3: How do I give negative feedback constructively?
+**A:** Use these techniques:
+- Ask questions: "Have you considered...?"
+- Explain reasoning: "This might cause X because..."
+- Offer alternatives: "What about...?"
+- Be specific: Point to exact code
+- Praise good parts first
+
+### Q4: How do I handle disagreements in reviews?
+**A:**
+1. Assume good intent
+2. Focus on code, not person
+3. Back up with evidence (docs, examples)
+4. Know when to compromise
+5. Escalate only if necessary
+6. "Disagree and commit" if needed
+
+### Q5: Should I review my own code first?
+**A:** Yes! Self-review checklist:
+- [ ] Code compiles and passes tests
+- [ ] Removed debug code and TODOs
+- [ ] Added/updated tests
+- [ ] Documentation updated
+- [ ] No sensitive data
+- [ ] Follows team conventions
+
+### Q6: How do I review code I'm unfamiliar with?
+**A:**
+1. Read PR description thoroughly
+2. Check linked issues/tickets
+3. Focus on general principles
+4. Ask questions (learning opportunity!)
+5. Request context from author
+6. Review tests to understand intent
+
+### Q7: What's the difference between "Request Changes" and "Comment"?
+**A:**
+| Request Changes | Comment/Suggestion |
+|-----------------|-------------------|
+| Must be fixed before merge | Nice to have |
+| Blocking issues | Minor improvements |
+| Bugs, security issues | Style preferences |
+| Design problems | Alternative approaches |
 
 ## Additional Resources
 - [Google's Code Review Guidelines](https://google.github.io/eng-practices/review/)

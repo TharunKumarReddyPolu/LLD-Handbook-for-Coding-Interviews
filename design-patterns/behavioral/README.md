@@ -2,6 +2,52 @@
 
 Behavioral design patterns are concerned with communication between objects, how objects interact and distribute responsibility.
 
+## 📚 Prerequisites & Learning Path
+
+### Prerequisites
+Before studying Behavioral Patterns, you should understand:
+- [Creational Patterns](../creational/README.md) - Object creation
+- [Structural Patterns](../structural/README.md) - Object composition
+- [Polymorphism](../../ood-basics/polymorphism.md) - Runtime behavior changes
+- [SOLID Principles](../../solid-principles/README.md) - Especially OCP and DIP
+
+### Recommended Study Order
+```
+1. Strategy (Most fundamental - swappable algorithms)
+         ↓
+2. Observer (Event handling)
+         ↓
+3. Command (Request as object)
+         ↓
+4. Template Method (Algorithm skeleton)
+         ↓
+5. State (State machine behavior)
+         ↓
+6. Chain of Responsibility, Iterator, Mediator (Advanced)
+         ↓
+7. Memento, Visitor (Specialized use cases)
+```
+
+### Learning Path
+After Behavioral Patterns, you're ready for:
+1. **Practice:** [Easy Interview Questions](../../interview-questions/easy/README.md)
+2. **Challenge:** [Medium Interview Questions](../../interview-questions/medium/README.md)
+3. **Master:** [Hard Interview Questions](../../interview-questions/hard/README.md)
+
+### Pattern Selection Guide
+| Problem | Pattern | Why |
+|---------|---------|-----|
+| Swappable algorithms | Strategy | Encapsulates algorithm |
+| React to state changes | Observer | Publish-subscribe model |
+| Encapsulate requests | Command | Decouple sender/receiver |
+| Common algorithm steps | Template Method | Define skeleton |
+| Object behavior varies by state | State | Clean state transitions |
+| Multiple handlers | Chain of Responsibility | Decoupled handling |
+| Traverse collection | Iterator | Uniform access |
+| Complex object interactions | Mediator | Centralized control |
+| Undo/redo functionality | Memento | Capture state |
+| Add operations to classes | Visitor | Double dispatch |
+
 ## Overview
 
 ```mermaid
@@ -256,6 +302,8 @@ public class Caretaker {
 ```
 
 ### Observer
+
+#### Java
 ```java
 public interface Observer {
     void update(String message);
@@ -280,6 +328,64 @@ public class Subject {
         }
     }
 }
+```
+
+#### Python
+```python
+from abc import ABC, abstractmethod
+from typing import List
+
+class Observer(ABC):
+    @abstractmethod
+    def update(self, message: str) -> None:
+        pass
+
+class Subject:
+    def __init__(self):
+        self._observers: List[Observer] = []
+        self._state: str = ""
+    
+    def attach(self, observer: Observer) -> None:
+        self._observers.append(observer)
+    
+    def set_state(self, state: str) -> None:
+        self._state = state
+        self._notify_observers()
+    
+    def _notify_observers(self) -> None:
+        for observer in self._observers:
+            observer.update(self._state)
+```
+
+#### C++
+```cpp
+class Observer {
+public:
+    virtual ~Observer() = default;
+    virtual void update(const std::string& message) = 0;
+};
+
+class Subject {
+private:
+    std::vector<Observer*> observers;
+    std::string state;
+public:
+    void attach(Observer* observer) {
+        observers.push_back(observer);
+    }
+    
+    void setState(const std::string& newState) {
+        state = newState;
+        notifyObservers();
+    }
+    
+private:
+    void notifyObservers() {
+        for (auto* observer : observers) {
+            observer->update(state);
+        }
+    }
+};
 ```
 
 ### State
@@ -310,6 +416,8 @@ public class ConcreteStateA implements State {
 ```
 
 ### Strategy
+
+#### Java
 ```java
 public interface Strategy {
     int execute(int a, int b);
@@ -333,6 +441,54 @@ public class AddStrategy implements Strategy {
         return a + b;
     }
 }
+```
+
+#### Python
+```python
+from abc import ABC, abstractmethod
+
+class Strategy(ABC):
+    @abstractmethod
+    def execute(self, a: int, b: int) -> int:
+        pass
+
+class Context:
+    def __init__(self, strategy: Strategy):
+        self._strategy = strategy
+    
+    def execute_strategy(self, a: int, b: int) -> int:
+        return self._strategy.execute(a, b)
+
+class AddStrategy(Strategy):
+    def execute(self, a: int, b: int) -> int:
+        return a + b
+```
+
+#### C++
+```cpp
+class Strategy {
+public:
+    virtual ~Strategy() = default;
+    virtual int execute(int a, int b) const = 0;
+};
+
+class Context {
+private:
+    std::unique_ptr<Strategy> strategy;
+public:
+    Context(std::unique_ptr<Strategy> s) : strategy(std::move(s)) {}
+    
+    int executeStrategy(int a, int b) const {
+        return strategy->execute(a, b);
+    }
+};
+
+class AddStrategy : public Strategy {
+public:
+    int execute(int a, int b) const override {
+        return a + b;
+    }
+};
 ```
 
 ### Template Method
@@ -487,6 +643,79 @@ public class ConcreteVisitor implements Visitor {
 9. **Visitor Violation**
    - Modifying element structure
    - Solution: Keep element structure stable
+
+## ❓ Frequently Asked Questions
+
+### Q1: What's the difference between Strategy and State?
+**A:**
+| Strategy | State |
+|----------|-------|
+| Client chooses algorithm | Object changes its own state |
+| Stateless (usually) | Maintains current state |
+| External selection | Internal transitions |
+| Algorithms are interchangeable | States have transition rules |
+
+### Q2: When should I use Observer vs Pub/Sub?
+**A:**
+| Observer | Publish/Subscribe |
+|----------|-------------------|
+| Direct reference to observers | Message broker in between |
+| Tightly coupled | Loosely coupled |
+| Synchronous | Can be async |
+| Same process | Can span processes |
+
+### Q3: What's Command pattern good for?
+**A:** Key use cases:
+- **Undo/Redo:** Store commands in history
+- **Queuing:** Commands as work items
+- **Logging:** Record commands for replay
+- **Transactions:** Group commands
+- **Remote execution:** Serialize and send
+
+### Q4: How is Chain of Responsibility different from Strategy?
+**A:**
+| Chain of Responsibility | Strategy |
+|------------------------|----------|
+| Request passed along chain | Single algorithm selected |
+| Multiple handlers possible | One strategy handles |
+| Order matters | Order doesn't matter |
+| Can pass to next | No passing |
+
+### Q5: When should I use Template Method vs Strategy?
+**A:**
+| Template Method | Strategy |
+|----------------|----------|
+| Uses inheritance | Uses composition |
+| Algorithm skeleton fixed | Entire algorithm varies |
+| Subclass overrides steps | Strategy object injected |
+| Compile-time binding | Runtime binding |
+
+### Q6: What's the difference between Mediator and Observer?
+**A:**
+| Mediator | Observer |
+|----------|----------|
+| Centralized control | Distributed notification |
+| Components don't know each other | Subject knows observers exist |
+| Two-way communication | One-way notification |
+| Complex interactions | Simple notifications |
+
+### Q7: When is Visitor pattern appropriate?
+**A:** Use when:
+- Structure is stable but operations change
+- Need many unrelated operations on structure
+- Want to avoid polluting element classes
+- Double dispatch is needed
+- **Don't use when:** Structure changes frequently
+
+### Q8: How do I implement undo/redo?
+**A:** Use Command + Memento:
+```
+1. Command stores operation
+2. Execute → Push to undo stack
+3. Undo → Pop from undo, push to redo
+4. Redo → Pop from redo, push to undo
+5. Memento stores state for complex undo
+```
 
 ## Additional Resources
 - [Chain of Responsibility Pattern](https://refactoring.guru/design-patterns/chain-of-responsibility)

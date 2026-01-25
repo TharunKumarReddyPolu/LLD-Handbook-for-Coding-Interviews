@@ -4,6 +4,30 @@
 
 Classes and objects are the fundamental building blocks of Object-Oriented Programming (OOP). A class is a blueprint for creating objects, and an object is an instance of a class.
 
+## 📚 Prerequisites & Learning Path
+
+### Prerequisites
+This is the **starting point** for Object-Oriented Design. Before studying this topic, you should have:
+- Basic programming knowledge (variables, functions, control flow)
+- Understanding of data types and basic syntax in your preferred language
+- Familiarity with any programming language (Java, Python, or C++)
+
+### Learning Path
+After mastering Classes & Objects, continue with:
+1. **Next:** [Encapsulation](encapsulation.md) - Learn to protect your data
+2. **Then:** [Inheritance](inheritance.md) - Extend and reuse classes
+3. **Then:** [Polymorphism](polymorphism.md) - One interface, many implementations
+4. **Finally:** [Abstraction](abstraction.md) - Hide complexity
+
+### How This Fits in the Big Picture
+```
+📍 YOU ARE HERE
+       ↓
+Classes & Objects → Encapsulation → Inheritance → Polymorphism → Abstraction
+       ↓
+These form the foundation for SOLID Principles and Design Patterns
+```
+
 ## Key Concepts
 
 ### 1. Classes
@@ -38,6 +62,8 @@ Classes and objects are the fundamental building blocks of Object-Oriented Progr
 ## Examples
 
 ### Basic Class Definition
+
+#### Java
 ```java
 public class Car {
     // Instance variables
@@ -63,7 +89,52 @@ public class Car {
 }
 ```
 
+#### Python
+```python
+class Car:
+    # Constructor
+    def __init__(self, brand: str, model: str, year: int):
+        # Instance variables
+        self._brand = brand
+        self._model = model
+        self._year = year
+    
+    # Methods
+    def start_engine(self) -> None:
+        print("Engine started!")
+    
+    def get_info(self) -> str:
+        return f"{self._year} {self._brand} {self._model}"
+```
+
+#### C++
+```cpp
+class Car {
+private:
+    // Instance variables
+    std::string brand;
+    std::string model;
+    int year;
+
+public:
+    // Constructor
+    Car(const std::string& brand, const std::string& model, int year)
+        : brand(brand), model(model), year(year) {}
+    
+    // Methods
+    void startEngine() {
+        std::cout << "Engine started!" << std::endl;
+    }
+    
+    std::string getInfo() const {
+        return std::to_string(year) + " " + brand + " " + model;
+    }
+};
+```
+
 ### Creating and Using Objects
+
+#### Java
 ```java
 // Creating objects
 Car myCar = new Car("Toyota", "Camry", 2022);
@@ -72,6 +143,28 @@ Car anotherCar = new Car("Honda", "Civic", 2023);
 // Using objects
 myCar.startEngine();
 System.out.println(myCar.getInfo());
+```
+
+#### Python
+```python
+# Creating objects
+my_car = Car("Toyota", "Camry", 2022)
+another_car = Car("Honda", "Civic", 2023)
+
+# Using objects
+my_car.start_engine()
+print(my_car.get_info())
+```
+
+#### C++
+```cpp
+// Creating objects
+Car myCar("Toyota", "Camry", 2022);
+Car anotherCar("Honda", "Civic", 2023);
+
+// Using objects
+myCar.startEngine();
+std::cout << myCar.getInfo() << std::endl;
 ```
 
 ## Common Pitfalls
@@ -208,6 +301,55 @@ System.out.println(myCar.getInfo());
    - Street, city, state, zip
    - Proper validation
    - ToString method
+
+## ❓ Frequently Asked Questions
+
+### Q1: What's the difference between a class and an object?
+**A:**
+| Class | Object |
+|-------|--------|
+| Blueprint/template | Instance of a class |
+| Defines structure | Has actual values |
+| Exists at compile time | Exists at runtime |
+| No memory allocated | Memory allocated |
+| One per type | Many can exist |
+
+### Q2: When should I use a class vs a struct?
+**A:**
+- **Java:** Only has classes (no structs)
+- **C++:** Use struct for data-only, class for behavior + data
+- **Python:** Use class for everything; dataclass for simple data containers
+- **General rule:** If it has behavior, use a class
+
+### Q3: What is `this` keyword used for?
+**A:** `this` refers to the current object instance:
+- Distinguish instance variables from parameters with same name
+- Pass current object to other methods
+- Chain constructor calls (`this()`)
+- Return the current object for method chaining
+
+### Q4: What's the difference between instance and class (static) members?
+**A:**
+| Instance Members | Static Members |
+|-----------------|----------------|
+| Belong to object | Belong to class |
+| Each object has own copy | Shared across all objects |
+| Accessed via object | Accessed via class name |
+| Can access static members | Cannot access instance members directly |
+
+### Q5: Can a class have multiple constructors?
+**A:** Yes! This is called constructor overloading:
+- Each constructor has different parameters
+- Use `this()` to chain constructors
+- Useful for providing default values
+- Common pattern: simple constructor calls complex one
+
+### Q6: What happens if I don't define a constructor?
+**A:** The compiler provides a default constructor:
+- Takes no arguments
+- Initializes fields to default values (0, null, false)
+- Not provided if you define any constructor yourself
+- Called implicitly when creating objects
 
 ## Additional Resources
 

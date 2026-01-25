@@ -3,11 +3,35 @@
 ## 📝 Definition
 Encapsulation is the bundling of data and the methods that operate on that data within a single unit or object, keeping the internal workings hidden from the outside world. It's one of the fundamental principles of OOP that helps achieve data hiding and abstraction.
 
+## 📚 Prerequisites & Learning Path
+
+### Prerequisites
+Before studying Encapsulation, you should understand:
+- [Classes & Objects](classes-and-objects.md) - Class structure, fields, and methods
+- Basic understanding of access levels (public vs private concept)
+
+### Learning Path
+After mastering Encapsulation, continue with:
+1. **Next:** [Inheritance](inheritance.md) - How encapsulation works with inheritance
+2. **Then:** [Abstraction](abstraction.md) - Higher level of hiding complexity
+3. **Related:** [Single Responsibility Principle](../solid-principles/srp.md) - Focused encapsulated classes
+4. **Best Practices:** [Clean Code](../best-practices/clean-code.md) - Encapsulation in practice
+
+### How This Fits in the Big Picture
+```
+Classes & Objects → Encapsulation → Inheritance → Polymorphism
+                         ↓
+          Protects data integrity and hides implementation
+          Foundation for maintainable, secure code
+```
+
 ## 🎯 Key Concepts
 
 ### 1. Data Hiding
 - Restricting direct access to class members
 - Using access modifiers (private, protected, public)
+
+#### Java
 ```java
 public class BankAccount {
     private double balance;  // Data hiding
@@ -23,6 +47,41 @@ public class BankAccount {
         return balance;
     }
 }
+```
+
+#### Python
+```python
+class BankAccount:
+    def __init__(self):
+        self._balance = 0.0  # Protected (convention)
+        self.__account_number = ""  # Private (name mangling)
+    
+    def deposit(self, amount: float) -> None:
+        if amount > 0:
+            self._balance += amount
+    
+    def get_balance(self) -> float:
+        return self._balance
+```
+
+#### C++
+```cpp
+class BankAccount {
+private:
+    double balance = 0.0;  // Data hiding
+    std::string accountNumber;
+
+public:
+    void deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+        }
+    }
+    
+    double getBalance() const {
+        return balance;
+    }
+};
 ```
 
 ### 2. Access Modifiers
@@ -260,6 +319,67 @@ public class Library {
     }
 }
 ```
+
+## ❓ Frequently Asked Questions
+
+### Q1: What's the difference between encapsulation and abstraction?
+**A:**
+| Encapsulation | Abstraction |
+|---------------|-------------|
+| Hides *data* | Hides *complexity* |
+| Uses access modifiers | Uses interfaces/abstract classes |
+| "How it's stored" | "What it does" |
+| Implementation detail | External behavior |
+| Bundling data + methods | Exposing only essential features |
+
+### Q2: Should I always use getters and setters?
+**A:** Not necessarily:
+- ✅ Use for external access to private fields
+- ✅ Use when validation is needed
+- ❌ Avoid for internal class use
+- ❌ Avoid if they expose mutable internal state
+- Consider: Does exposing this data break encapsulation?
+
+### Q3: What are the access modifiers in order of restrictiveness?
+**A:**
+| Modifier | Same Class | Same Package | Subclass | World |
+|----------|------------|--------------|----------|-------|
+| `private` | ✅ | ❌ | ❌ | ❌ |
+| (default) | ✅ | ✅ | ❌ | ❌ |
+| `protected` | ✅ | ✅ | ✅ | ❌ |
+| `public` | ✅ | ✅ | ✅ | ✅ |
+
+### Q4: How do I properly return collections from getters?
+**A:** Return defensive copies to prevent external modification:
+```java
+// Bad - exposes internal list
+public List<Item> getItems() { return items; }
+
+// Good - return copy or unmodifiable view
+public List<Item> getItems() { 
+    return Collections.unmodifiableList(items);
+}
+```
+
+### Q5: What's the "Tell, Don't Ask" principle?
+**A:** Instead of getting data and making decisions externally, tell the object what to do:
+```java
+// Ask (Bad)
+if (account.getBalance() >= amount) {
+    account.setBalance(account.getBalance() - amount);
+}
+
+// Tell (Good)
+account.withdraw(amount); // Object handles logic
+```
+
+### Q6: Can encapsulation be broken with reflection?
+**A:** Yes, but it's generally bad practice:
+- Reflection can access private members
+- Breaks the contract of the class
+- May cause unexpected behavior
+- Security managers can restrict this
+- Don't rely on encapsulation for security
 
 ## 📚 Additional Resources
 

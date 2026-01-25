@@ -8,7 +8,7 @@
 [![GitHub forks](https://img.shields.io/github/forks/TharunKumarReddyPolu/LLD-Handbook-for-Coding-Interviews?style=social)](https://github.com/TharunKumarReddyPolu/LLD-Handbook-for-Coding-Interviews/network/members)
 [![GitHub issues](https://img.shields.io/github/issues/TharunKumarReddyPolu/LLD-Handbook-for-Coding-Interviews)](https://github.com/TharunKumarReddyPolu/LLD-Handbook-for-Coding-Interviews/issues)
 [![GitHub license](https://img.shields.io/github/license/TharunKumarReddyPolu/LLD-Handbook-for-Coding-Interviews)](https://github.com/TharunKumarReddyPolu/LLD-Handbook-for-Coding-Interviews/blob/main/LICENSE)
-[![Last Updated](https://img.shields.io/badge/last%20updated-July%202025-blue)](https://github.com/TharunKumarReddyPolu/LLD-Handbook-for-Coding-Interviews)
+[![Last Updated](https://img.shields.io/badge/last%20updated-January%202026-blue)](https://github.com/TharunKumarReddyPolu/LLD-Handbook-for-Coding-Interviews)
 
 </div>
 
@@ -48,8 +48,53 @@ This handbook is designed to help you master Low Level Design concepts for codin
 1. **Start with OOP Basics** if you're new to object-oriented design
 2. **Master SOLID Principles** for robust software design
 3. **Learn Design Patterns** through practical examples
-4. **Practice Interview Questions** from easy to hard
-5. **Apply Best Practices** in your solutions
+
+---
+
+## 📚 Complete Learning Path
+
+### Recommended Study Order
+
+```
+Week 1-2: OOD Basics
+┌─────────────────────────────────────────────────────────┐
+│  Classes & Objects → Encapsulation → Inheritance        │
+│         → Polymorphism → Abstraction → Interfaces       │
+│         → Abstract Classes → Relationships              │
+└─────────────────────────────────────────────────────────┘
+                          ↓
+Week 3-4: SOLID Principles
+┌─────────────────────────────────────────────────────────┐
+│  SRP → OCP → LSP → ISP → DIP                           │
+└─────────────────────────────────────────────────────────┘
+                          ↓
+Week 5-7: Design Patterns
+┌─────────────────────────────────────────────────────────┐
+│  Creational: Factory, Builder, Singleton                │
+│  Structural: Adapter, Decorator, Facade                 │
+│  Behavioral: Strategy, Observer, Command                │
+└─────────────────────────────────────────────────────────┘
+                          ↓
+Week 8+: Interview Practice
+┌─────────────────────────────────────────────────────────┐
+│  Easy Questions → Medium Questions → Hard Questions     │
+└─────────────────────────────────────────────────────────┘
+```
+
+### Study Based on Experience Level
+
+| Your Level | Start Here | Focus Areas | Time Estimate |
+|------------|------------|-------------|---------------|
+| **Beginner** | [OOD Basics](ood-basics/README.md) | All pillars of OOP | 8-10 weeks |
+| **Know OOP** | [SOLID Principles](solid-principles/README.md) | Design guidelines | 6-8 weeks |
+| **Know SOLID** | [Design Patterns](design-patterns/README.md) | Pattern application | 4-6 weeks |
+| **Interview Ready** | [Interview Questions](interview-questions/easy/README.md) | Practice problems | 2-4 weeks |
+
+### Best Practices (Study Alongside)
+- [Clean Code](best-practices/clean-code.md) - Apply throughout your learning
+- [Error Handling](best-practices/error-handling.md) - Essential for robust code
+- [Testing](best-practices/testing.md) - Validate your implementations
+- [Code Review](best-practices/code-review.md) - Improve code quality
 
 ---
 
@@ -65,7 +110,7 @@ This handbook is designed to help you master Low Level Design concepts for codin
 - [🏗️ Abstract Classes](ood-basics/abstract-classes.md)
 - [🤝 Association, Aggregation & Composition](ood-basics/relationships.md)
 
-### 🌟 **SOLID Principles**
+### 🌟 **[SOLID Principles](solid-principles/README.md)**
 - [🎯 Single Responsibility (SRP)](solid-principles/srp.md)
 - [🔓 Open/Closed (OCP)](solid-principles/ocp.md)
 - [🔄 Liskov Substitution (LSP)](solid-principles/lsp.md)
@@ -77,12 +122,12 @@ This handbook is designed to help you master Low Level Design concepts for codin
 - [🔨 Structural Patterns](design-patterns/structural/README.md)
 - [🎭 Behavioral Patterns](design-patterns/behavioral/README.md)
 
-### 💻 **Interview Questions**
+### 💻 **[Interview Questions](interview-questions/README.md)**
 - [📝 Easy Problems](interview-questions/easy/README.md)
 - [🔄 Medium Problems](interview-questions/medium/README.md)
 - [🚀 Hard Problems](interview-questions/hard/README.md)
 
-### ✨ **Best Practices**
+### ✨ **[Best Practices](best-practices/README.md)**
 - [📋 Clean Code Guidelines](best-practices/clean-code.md)
 - [🔍 Code Review Tips](best-practices/code-review.md)
 - [🐛 Error Handling](best-practices/error-handling.md)

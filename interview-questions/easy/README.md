@@ -2,6 +2,50 @@
 
 This section contains entry-level LLD interview questions that focus on basic OOP concepts and simple design patterns.
 
+## 📚 Prerequisites & Learning Path
+
+### Prerequisites
+Before attempting Easy questions, ensure you understand:
+- [OOD Basics](../../ood-basics/README.md) - All four pillars of OOP
+- [Classes & Objects](../../ood-basics/classes-and-objects.md) - Fundamental building blocks
+- [Encapsulation](../../ood-basics/encapsulation.md) - Data hiding
+- [Inheritance](../../ood-basics/inheritance.md) - Code reuse
+- [SOLID Principles](../../solid-principles/README.md) - At least SRP and OCP
+
+### Recommended Patterns to Know
+| Pattern | Used In |
+|---------|---------|
+| Singleton | Logger, Configuration |
+| Factory | Object creation |
+| Strategy | Algorithm selection |
+
+### Interview Approach
+```
+1. Clarify Requirements (2-3 min)
+         ↓
+2. Identify Classes & Relationships (5 min)
+         ↓
+3. Define Interfaces & Methods (5 min)
+         ↓
+4. Write Core Implementation (15-20 min)
+         ↓
+5. Discuss Trade-offs & Extensions (5 min)
+```
+
+### Learning Path
+| Level | Focus | Time Estimate |
+|-------|-------|---------------|
+| 📍 Easy (You're here) | OOP basics, simple patterns | 1-2 weeks |
+| [Medium](../medium/README.md) | Complex patterns, concurrency | 2-3 weeks |
+| [Hard](../hard/README.md) | Distributed systems, architecture | 3-4 weeks |
+
+### Tips for Easy Questions
+- Focus on clean class design
+- Apply SRP consistently  
+- Use meaningful names
+- Handle edge cases
+- Don't over-engineer
+
 ## Questions List
 
 1. [Design a Simple Logger](#design-a-simple-logger)
@@ -19,6 +63,8 @@ This section contains entry-level LLD interview questions that focus on basic OO
 - Thread-safe logging
 
 ### Example Solution
+
+#### Java
 ```java
 public enum LogLevel {
     INFO, WARNING, ERROR, DEBUG
@@ -60,6 +106,98 @@ public class Logger {
         }
     }
 }
+```
+
+#### Python
+```python
+from enum import Enum
+from abc import ABC, abstractmethod
+from typing import List
+import threading
+
+class LogLevel(Enum):
+    INFO = "INFO"
+    WARNING = "WARNING"
+    ERROR = "ERROR"
+    DEBUG = "DEBUG"
+
+class LogDestination(ABC):
+    @abstractmethod
+    def write(self, message: str, level: LogLevel) -> None:
+        pass
+
+class ConsoleLogger(LogDestination):
+    def write(self, message: str, level: LogLevel) -> None:
+        print(f"[{level.value}] {message}")
+
+class Logger:
+    _instance = None
+    _lock = threading.Lock()
+    
+    def __new__(cls):
+        with cls._lock:
+            if cls._instance is None:
+                cls._instance = super().__new__(cls)
+                cls._instance._destinations = []
+        return cls._instance
+    
+    def add_destination(self, destination: LogDestination) -> None:
+        self._destinations.append(destination)
+    
+    def log(self, message: str, level: LogLevel) -> None:
+        with self._lock:
+            for destination in self._destinations:
+                destination.write(message, level)
+```
+
+#### C++
+```cpp
+#include <vector>
+#include <mutex>
+#include <iostream>
+
+enum class LogLevel { INFO, WARNING, ERROR, DEBUG };
+
+class LogDestination {
+public:
+    virtual ~LogDestination() = default;
+    virtual void write(const std::string& message, LogLevel level) = 0;
+};
+
+class ConsoleLogger : public LogDestination {
+public:
+    void write(const std::string& message, LogLevel level) override {
+        std::cout << "[" << static_cast<int>(level) << "] " << message << std::endl;
+    }
+};
+
+class Logger {
+private:
+    static Logger* instance;
+    static std::mutex mutex;
+    std::vector<std::unique_ptr<LogDestination>> destinations;
+    
+    Logger() = default;
+public:
+    static Logger* getInstance() {
+        std::lock_guard<std::mutex> lock(mutex);
+        if (instance == nullptr) {
+            instance = new Logger();
+        }
+        return instance;
+    }
+    
+    void addDestination(std::unique_ptr<LogDestination> dest) {
+        destinations.push_back(std::move(dest));
+    }
+    
+    void log(const std::string& message, LogLevel level) {
+        std::lock_guard<std::mutex> lock(mutex);
+        for (auto& dest : destinations) {
+            dest->write(message, level);
+        }
+    }
+};
 ```
 
 ### Key Points
@@ -274,7 +412,58 @@ public class Product {
 - Observer pattern for inventory tracking
 - Factory pattern for product creation
 
+## ❓ Frequently Asked Questions
+
+### Q1: How do I start an LLD interview problem?
+**A:** Follow this structure:
+1. **Clarify requirements** (2-3 min) - Ask about scale, features, constraints
+2. **Identify core entities** (2-3 min) - Nouns become classes
+3. **Define relationships** (2-3 min) - How entities interact
+4. **Design class structure** (5 min) - Interfaces, inheritance
+5. **Implement core logic** (15-20 min) - Write actual code
+6. **Discuss extensions** (5 min) - Trade-offs, improvements
+
+### Q2: Should I use design patterns in every problem?
+**A:** Use patterns when they fit naturally:
+- ✅ Singleton for Logger (single instance)
+- ✅ Strategy for payment methods (swappable algorithms)
+- ✅ Factory for object creation (hide complexity)
+- ❌ Don't force patterns where simple code works
+- ❌ Don't use patterns you can't explain
+
+### Q3: How much code should I write in an interview?
+**A:** Focus on:
+- Core classes and interfaces
+- Main algorithms/logic
+- Key methods (not getters/setters)
+- Enough to show design works
+- Skip boilerplate, mention you'd add it
+
+### Q4: What if I don't know where to start?
+**A:** Use this technique:
+1. List the main use cases
+2. For each use case, identify: actors, actions, objects
+3. Objects → Classes
+4. Actions → Methods
+5. Relationships → Inheritance/Composition
+
+### Q5: How do I handle requirements I'm unsure about?
+**A:**
+- Ask clarifying questions
+- State your assumptions explicitly
+- "I'll assume X, let me know if that's incorrect"
+- Design for flexibility where uncertain
+- Mention alternatives you considered
+
+### Q6: What level of error handling should I include?
+**A:** For easy problems:
+- Validate inputs at entry points
+- Throw meaningful exceptions
+- Don't get lost in edge cases
+- Mention you'd add more in production
+- Focus on happy path first
+
 ## Additional Resources
 - [Clean Code Principles](../../best-practices/clean-code.md)
 - [Design Patterns](../../design-patterns/README.md)
-- [SOLID Principles](../../solid-principles/README.md) 
+- [SOLID Principles](../../solid-principles/srp.md) 

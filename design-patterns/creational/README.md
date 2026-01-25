@@ -2,6 +2,43 @@
 
 Creational design patterns provide various object creation mechanisms, which increase flexibility and reuse of existing code.
 
+## 📚 Prerequisites & Learning Path
+
+### Prerequisites
+Before studying Creational Patterns, you should understand:
+- [Classes & Objects](../../ood-basics/classes-and-objects.md) - Object creation basics
+- [Inheritance](../../ood-basics/inheritance.md) - Class hierarchies
+- [Interfaces](../../ood-basics/interfaces.md) - Abstraction and contracts
+- [SOLID Principles](../../solid-principles/README.md) - Especially SRP and DIP
+
+### Recommended Study Order
+```
+1. Factory Method (Most fundamental)
+         ↓
+2. Abstract Factory (Extension of Factory)
+         ↓
+3. Builder (Complex object construction)
+         ↓
+4. Singleton (Global access pattern)
+         ↓
+5. Prototype (Clone-based creation)
+```
+
+### Learning Path
+After Creational Patterns, continue with:
+1. **Next:** [Structural Patterns](../structural/README.md) - Object composition
+2. **Then:** [Behavioral Patterns](../behavioral/README.md) - Object interaction
+3. **Apply:** [Medium Interview Questions](../../interview-questions/medium/README.md) - Practice problems
+
+### Pattern Selection Guide
+| Problem | Pattern | Why |
+|---------|---------|-----|
+| Need to create objects without specifying class | Factory Method | Encapsulates creation |
+| Need families of related objects | Abstract Factory | Ensures compatibility |
+| Object has many optional parameters | Builder | Step-by-step construction |
+| Need exactly one instance | Singleton | Global access point |
+| Creating object is expensive | Prototype | Clone instead of new |
+
 ## Overview
 
 ```mermaid
@@ -59,6 +96,8 @@ graph TD
 ## Implementation Guidelines
 
 ### Factory Method
+
+#### Java
 ```java
 // Creator
 public abstract class DocumentCreator {
@@ -79,7 +118,52 @@ public class PDFDocumentCreator extends DocumentCreator {
 }
 ```
 
+#### Python
+```python
+from abc import ABC, abstractmethod
+
+# Creator
+class DocumentCreator(ABC):
+    @abstractmethod
+    def create_document(self) -> Document:
+        pass
+    
+    def process_document(self) -> None:
+        doc = self.create_document()
+        doc.process()
+
+# Concrete Creator
+class PDFDocumentCreator(DocumentCreator):
+    def create_document(self) -> Document:
+        return PDFDocument()
+```
+
+#### C++
+```cpp
+// Creator
+class DocumentCreator {
+public:
+    virtual ~DocumentCreator() = default;
+    virtual std::unique_ptr<Document> createDocument() = 0;
+    
+    void processDocument() {
+        auto doc = createDocument();
+        doc->process();
+    }
+};
+
+// Concrete Creator
+class PDFDocumentCreator : public DocumentCreator {
+public:
+    std::unique_ptr<Document> createDocument() override {
+        return std::make_unique<PDFDocument>();
+    }
+};
+```
+
 ### Abstract Factory
+
+#### Java
 ```java
 // Abstract Factory
 public interface GUIFactory {
@@ -101,7 +185,53 @@ public class WindowsFactory implements GUIFactory {
 }
 ```
 
+#### Python
+```python
+from abc import ABC, abstractmethod
+
+# Abstract Factory
+class GUIFactory(ABC):
+    @abstractmethod
+    def create_button(self) -> Button: pass
+    
+    @abstractmethod
+    def create_checkbox(self) -> Checkbox: pass
+
+# Concrete Factory
+class WindowsFactory(GUIFactory):
+    def create_button(self) -> Button:
+        return WindowsButton()
+    
+    def create_checkbox(self) -> Checkbox:
+        return WindowsCheckbox()
+```
+
+#### C++
+```cpp
+// Abstract Factory
+class GUIFactory {
+public:
+    virtual ~GUIFactory() = default;
+    virtual std::unique_ptr<Button> createButton() = 0;
+    virtual std::unique_ptr<Checkbox> createCheckbox() = 0;
+};
+
+// Concrete Factory
+class WindowsFactory : public GUIFactory {
+public:
+    std::unique_ptr<Button> createButton() override {
+        return std::make_unique<WindowsButton>();
+    }
+    
+    std::unique_ptr<Checkbox> createCheckbox() override {
+        return std::make_unique<WindowsCheckbox>();
+    }
+};
+```
+
 ### Builder
+
+#### Java
 ```java
 // Builder
 public class ComputerBuilder {
@@ -124,6 +254,58 @@ public class ComputerBuilder {
 
 // Usage
 Computer computer = new ComputerBuilder()
+    .addProcessor("Intel i7")
+    .addMemory(16)
+    .build();
+```
+
+#### Python
+```python
+class ComputerBuilder:
+    def __init__(self):
+        self._computer = Computer()
+    
+    def add_processor(self, processor: str) -> 'ComputerBuilder':
+        self._computer.processor = processor
+        return self
+    
+    def add_memory(self, memory: int) -> 'ComputerBuilder':
+        self._computer.memory = memory
+        return self
+    
+    def build(self) -> Computer:
+        return self._computer
+
+# Usage
+computer = (ComputerBuilder()
+    .add_processor("Intel i7")
+    .add_memory(16)
+    .build())
+```
+
+#### C++
+```cpp
+class ComputerBuilder {
+private:
+    std::unique_ptr<Computer> computer = std::make_unique<Computer>();
+public:
+    ComputerBuilder& addProcessor(const std::string& processor) {
+        computer->setProcessor(processor);
+        return *this;
+    }
+    
+    ComputerBuilder& addMemory(int memory) {
+        computer->setMemory(memory);
+        return *this;
+    }
+    
+    std::unique_ptr<Computer> build() {
+        return std::move(computer);
+    }
+};
+
+// Usage
+auto computer = ComputerBuilder()
     .addProcessor("Intel i7")
     .addMemory(16)
     .build();
@@ -157,6 +339,8 @@ public class Rectangle extends Shape {
 ```
 
 ### Singleton
+
+#### Java
 ```java
 // Thread-safe Singleton
 public class Singleton {
@@ -175,6 +359,60 @@ public class Singleton {
         return instance;
     }
 }
+```
+
+#### Python
+```python
+import threading
+
+class Singleton:
+    _instance = None
+    _lock = threading.Lock()
+    
+    def __new__(cls):
+        if cls._instance is None:
+            with cls._lock:
+                if cls._instance is None:
+                    cls._instance = super().__new__(cls)
+        return cls._instance
+
+# Alternative using decorator
+def singleton(cls):
+    instances = {}
+    def get_instance(*args, **kwargs):
+        if cls not in instances:
+            instances[cls] = cls(*args, **kwargs)
+        return instances[cls]
+    return get_instance
+```
+
+#### C++
+```cpp
+#include <mutex>
+
+// Thread-safe Singleton
+class Singleton {
+private:
+    static std::unique_ptr<Singleton> instance;
+    static std::mutex mutex;
+    
+    Singleton() = default;
+    
+public:
+    Singleton(const Singleton&) = delete;
+    Singleton& operator=(const Singleton&) = delete;
+    
+    static Singleton* getInstance() {
+        std::lock_guard<std::mutex> lock(mutex);
+        if (instance == nullptr) {
+            instance.reset(new Singleton());
+        }
+        return instance.get();
+    }
+};
+
+std::unique_ptr<Singleton> Singleton::instance = nullptr;
+std::mutex Singleton::mutex;
 ```
 
 ## Best Practices
@@ -229,6 +467,66 @@ public class Singleton {
 4. **Deep Prototype Chains**
    - Creating deep hierarchies of prototype objects
    - Solution: Keep prototype hierarchies shallow
+
+## ❓ Frequently Asked Questions
+
+### Q1: When should I use Factory Method vs Abstract Factory?
+**A:**
+| Factory Method | Abstract Factory |
+|---------------|-----------------|
+| Creates ONE product type | Creates FAMILIES of products |
+| Single method for creation | Multiple factory methods |
+| Subclasses decide type | Client chooses factory |
+| Simpler, one product | Complex, related products |
+
+### Q2: Is Singleton an anti-pattern?
+**A:** It depends on usage:
+- ❌ **Anti-pattern when:** Used as global state, makes testing hard, hides dependencies
+- ✅ **Appropriate when:** Resource management (connection pools), configuration, logging
+- **Alternative:** Dependency injection for better testability
+
+### Q3: When does Builder make sense over a constructor?
+**A:** Use Builder when:
+- More than 4-5 constructor parameters
+- Many optional parameters
+- Want to make objects immutable
+- Need to validate before building
+- Construction involves multiple steps
+
+### Q4: What's the difference between Factory and Builder?
+**A:**
+| Factory | Builder |
+|---------|---------|
+| Returns complete object | Constructs step by step |
+| Hides concrete class | Exposes construction process |
+| Usually one method call | Multiple method calls |
+| For families/variations | For complex objects |
+
+### Q5: When should I use Prototype pattern?
+**A:** Use when:
+- Object creation is expensive
+- You need copies with slight variations
+- Runtime doesn't know concrete types
+- Want to avoid subclass explosion
+- Example: Game object cloning, document templates
+
+### Q6: How do I make Singleton thread-safe?
+**A:** Options (from simple to complex):
+1. **Eager initialization:** Create at class load
+2. **Double-checked locking:** Check, lock, check again
+3. **Holder idiom:** Inner static class holds instance
+4. **Enum singleton:** Language-guaranteed uniqueness (Java)
+
+### Q7: Can Factory and Singleton be combined?
+**A:** Yes! Common pattern:
+```java
+public class LoggerFactory {
+    private static LoggerFactory instance;
+    
+    public static LoggerFactory getInstance() { /* singleton */ }
+    public Logger createLogger(String name) { /* factory */ }
+}
+```
 
 ## Additional Resources
 - [Factory Method Pattern](https://refactoring.guru/design-patterns/factory-method)

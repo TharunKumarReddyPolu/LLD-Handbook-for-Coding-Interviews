@@ -1,0 +1,6 @@
+# Freebuff/Codebuff local metadata
+.freebuff/
+
+# OS noise
+.DS_Store
+Thumbs.db

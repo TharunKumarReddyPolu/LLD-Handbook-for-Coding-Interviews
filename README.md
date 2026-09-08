@@ -8,11 +8,11 @@
 [![GitHub forks](https://img.shields.io/github/forks/TharunKumarReddyPolu/LLD-Handbook-for-Coding-Interviews?style=social)](https://github.com/TharunKumarReddyPolu/LLD-Handbook-for-Coding-Interviews/network/members)
 [![GitHub issues](https://img.shields.io/github/issues/TharunKumarReddyPolu/LLD-Handbook-for-Coding-Interviews)](https://github.com/TharunKumarReddyPolu/LLD-Handbook-for-Coding-Interviews/issues)
 [![GitHub license](https://img.shields.io/github/license/TharunKumarReddyPolu/LLD-Handbook-for-Coding-Interviews)](https://github.com/TharunKumarReddyPolu/LLD-Handbook-for-Coding-Interviews/blob/main/LICENSE)
-[![Last Updated](https://img.shields.io/badge/last%20updated-January%202026-blue)](https://github.com/TharunKumarReddyPolu/LLD-Handbook-for-Coding-Interviews)
+[![Last Updated](https://img.shields.io/badge/last%20updated-September%202026-blue)](https://github.com/TharunKumarReddyPolu/LLD-Handbook-for-Coding-Interviews)
 
 </div>
 
-**_This handbook is a comprehensive guide to Low Level Design (LLD) / Object Oriented Design (OOD) concepts for coding interviews at top tech companies. Each topic is presented in a concise, practical format covering: core principles, design patterns, real-world examples, common interview questions, and best practices to help you master system design fundamentals._**
+**_This handbook is a comprehensive guide to Low Level Design (LLD) / Object Oriented Design (OOD) for coding interviews at top tech companies — now with complete, runnable Java solutions to classic machine coding problems like Parking Lot, Splitwise, BookMyShow, Elevator System, Snake and Ladder, and Vending Machine. Each topic covers core principles, SOLID, design patterns, class diagrams, real-world examples, common interview questions, edge cases, and best practices to help you master system design fundamentals._**
 
 ---
 
@@ -20,10 +20,12 @@
 
 - [🎯 About This Handbook](#-about-this-handbook)
 - [⚡ Quick Start](#-quick-start)
+- [🧩 LLD Solutions — Machine Coding Problems](#-lld-solutions--machine-coding-problems)
 - [📚 Topics Covered](#-topics-covered)
 - [🎯 What You'll Learn](#-what-youll-learn)
 - [📖 Must-Know References](#-must-know-references)
 - [📺 Video Resources](#-video-resources)
+- [⭐ Star History](#star-history)
 - [🤝 Contributing](#-contributing)
 - [⭐ Support the Project](#-support-the-project)
 
@@ -58,6 +60,8 @@ This handbook is designed to help you master Low Level Design concepts for codin
 1. **Start with OOP Basics** if you're new to object-oriented design
 2. **Master SOLID Principles** for robust software design
 3. **Learn Design Patterns** through practical examples
+4. **Practice with the [LLD Solutions](#-lld-solutions--machine-coding-problems)** — full Java implementations of classic machine coding problems
+5. **Revise with the [LLD Cheatsheet](cheatsheet.md)** the night before your interview
 
 ---
 
@@ -105,6 +109,26 @@ Week 8+: Interview Practice
 - [Error Handling](best-practices/error-handling.md) - Essential for robust code
 - [Testing](best-practices/testing.md) - Validate your implementations
 - [Code Review](best-practices/code-review.md) - Improve code quality
+
+### 🧩 LLD Solutions — Machine Coding Problems
+
+⭐ **Last-minute revision?** Jump straight to the [one-page LLD Cheatsheet](cheatsheet.md).
+
+Complete, runnable solutions to the classic LLD interview problems — requirements → class diagrams → **full Java code** → edge cases → follow-up questions:
+
+| # | Problem | Difficulty | Key Concepts |
+|---|---------|------------|--------------|
+| 1 | [🚗 Parking Lot](solutions/parking-lot.md) | 🟢 Easy | Singleton, Strategy, concurrency-safe spot allocation |
+| 2 | [🎲 Snake and Ladder](solutions/snake-and-ladder.md) | 🟢 Easy | Rules engine, pluggable win strategies, seeded dice |
+| 3 | [💰 Splitwise](solutions/splitwise.md) | 🟡 Medium | Strategy splits, balance ledger, debt simplification |
+| 4 | [🛗 Elevator System](solutions/elevator-system.md) | 🟡 Medium | State machines, LOOK scheduling, dispatch mediation |
+| 5 | [🎟️ BookMyShow](solutions/bookmyshow.md) | 🔴 Hard | Seat locking with TTL, no double booking, compensation |
+| 6 | [🥤 Vending Machine](solutions/vending-machine.md) | 🟢 Easy | State pattern, change making, guard rails |
+| 7 | [⭕ Tic-Tac-Toe](solutions/tic-tac-toe.md) | 🟢 Easy | O(1) win detection, pluggable move strategies |
+| 8 | [🗃️ LRU Cache](solutions/lru-cache.md) | 🟢 Easy | HashMap + doubly linked list, O(1) get/put |
+| 9 | [☕ Coffee Vending Machine](solutions/coffee-vending-machine.md) | 🟡 Medium | Recipe-as-data, atomic inventory, Observer alerts |
+
+👉 **[View all 18 planned problems & the practice roadmap →](solutions/README.md)**
 
 ---
 

@@ -50,12 +50,20 @@ function splitTopLevelDeclarations(blockText) {
   let currentName = null;
   let sawDecl = false;
 
+  const isSeparator = (l) =>
+    l.trim() === "" || /^\s*(\/\/|\/\*|\*|@)/.test(l);
+
   const flush = () => {
     if (currentLines && currentName) {
-      while (currentLines.length && currentLines[currentLines.length - 1].trim() === "") {
-        currentLines.pop();
+      // Trailing blanks/comments/annotations belong to the NEXT declaration
+      // (e.g. a section header followed by @FunctionalInterface) — peel and carry.
+      const carried = [];
+      while (currentLines.length && isSeparator(currentLines[currentLines.length - 1])) {
+        carried.unshift(currentLines.pop());
       }
+      while (carried.length && carried[0].trim() === "") carried.shift();
       chunks.push({ name: currentName, text: currentLines.join("\n") });
+      pendingAnnotations = carried;
     }
     currentLines = null;
     currentName = null;

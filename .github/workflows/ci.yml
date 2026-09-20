@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  compile-and-run:
+    name: Compile & run all LLD solutions
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Extract Java from solutions markdown
+        run: node tools/extract-java.js
+
+      - name: Compile everything
+        run: |
+          find build/java -name '*.java' > sources.txt
+          echo "Compiling $(wc -l < sources.txt) files..."
+          javac -Xlint:all -Werror -d build/classes @sources.txt
+
+      - name: Run every solution's demo Main
+        run: |
+          set -e
+          while IFS= read -r cls; do
+            echo "▶ Running ${cls}..."
+            timeout 60 java -cp build/classes "$cls"
+          done < build/java/main-classes.txt
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo "## CI Summary"
+            echo ""
+            echo "- Solutions: $(ls solutions/*.md | grep -v README.md | wc -l)"
+            echo "- Main entry points: $(grep -c . build/java/main-classes.txt 2>/dev/null || echo 0)"
+            echo "- Result: ${{ job.status }}"
+          } >> "$GITHUB_STEP_SUMMARY"

@@ -1,0 +1,6 @@
+This repo uses issue templates to keep things moving:
+
+- 🧩 **[New LLD solution](../issues/new?template=lld-solution.md)** — claim one of the planned machine-coding problems (Chess, Cricinfo, Car Rental, Stack Overflow, LinkedIn, Airbnb, Amazon, Uber, Rate Limiter). Labeled `good first issue` for first-time contributors.
+- 🐛 **[Bug report](../issues/new?template=bug-report.md)** — report an error in content, diagrams, or code.
+
+CI extracts every \`\`\`java block from the solutions and compiles + runs it — open PRs must keep the build green. See the workflow in \`.github/workflows/ci.yml\` and the extractor in \`tools/extract-java.js\`.

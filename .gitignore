@@ -4,3 +4,6 @@
 # OS noise
 .DS_Store
 Thumbs.db
+
+# Generated artifacts (extracted/compiled Java from solutions markdown)
+build/

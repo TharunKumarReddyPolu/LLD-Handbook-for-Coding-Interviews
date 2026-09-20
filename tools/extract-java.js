@@ -88,6 +88,12 @@ function splitTopLevelDeclarations(blockText) {
   return { chunks, imports };
 }
 
+// Slugs like "vending-machine" are not valid Java packages; sanitize to identifiers.
+function toPackageName(slug) {
+  const sanitized = slug.replace(/[^A-Za-z0-9_]/g, "_");
+  return /^[0-9]/.test(sanitized) ? "_" + sanitized : sanitized;
+}
+
 function main() {
   fs.rmSync(OUT_DIR, { recursive: true, force: true });
   fs.mkdirSync(OUT_DIR, { recursive: true });
@@ -104,28 +110,29 @@ function main() {
 
   for (const mdFile of mdFiles) {
     const slug = mdFile.replace(/\.md$/, "");
+    const pkg = toPackageName(slug);
     const markdown = fs.readFileSync(path.join(SOLUTIONS_DIR, mdFile), "utf8");
     const blocks = extractJavaBlocks(markdown);
     if (blocks.length === 0) {
       console.warn('WARN: no ```java block found in ' + mdFile);
       continue;
     }
-    const pkgDir = path.join(OUT_DIR, slug);
+    const pkgDir = path.join(OUT_DIR, pkg);
     fs.mkdirSync(pkgDir, { recursive: true });
 
     for (const block of blocks) {
       const { chunks, imports } = splitTopLevelDeclarations(block);
       const importBlock = imports.length ? imports.join("\n") + "\n" : "";
       for (const chunk of chunks) {
-        const key = `${slug}.${chunk.name}`;
+        const key = `${pkg}.${chunk.name}`;
         if (seen.has(key)) {
           throw new Error(`Duplicate class ${chunk.name} in ${mdFile}`);
         }
         seen.add(key);
         const fileName = path.join(pkgDir, `${chunk.name}.java`);
-        fs.writeFileSync(fileName, `package ${slug};\n\n${importBlock}\n${chunk.text}\n`, "utf8");
+        fs.writeFileSync(fileName, `package ${pkg};\n\n${importBlock}\n${chunk.text}\n`, "utf8");
         fileCount += 1;
-        if (chunk.name === "Main") mainClasses.push(`${slug}.Main`);
+        if (chunk.name === "Main") mainClasses.push(`${pkg}.Main`);
       }
     }
     classCount += 1;

@@ -160,6 +160,7 @@ class User {
 
     void adjustBalance(User other, double delta) { balanceSheet.adjust(other, delta); }
     void showBalances() { balanceSheet.show(name); }
+    BalanceSheet balances() { return balanceSheet; }
     String getId() { return id; }
     String getName() { return name; }
 
@@ -205,7 +206,7 @@ class Split {
 
     Split(User user, double amount) {
         this.user = user;
-        this.amount = round(amount);
+        this.amount = Money.round(amount);
     }
     User getUser() { return user; }
     double getAmount() { return amount; }
@@ -358,7 +359,7 @@ class Group {
         Map<User, Double> net = new HashMap<>();
         for (User m : members) net.put(m, 0.0);
         for (User m : members) {
-            for (Map.Entry<User, Double> e : m.balanceSheet.snapshot().entrySet()) {
+            for (Map.Entry<User, Double> e : m.balances().snapshot().entrySet()) {
                 net.merge(m, e.getValue(), Double::sum);
             }
         }

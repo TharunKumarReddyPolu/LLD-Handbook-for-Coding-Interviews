@@ -4,6 +4,7 @@
   
 ![LLD Handbook Cover](https://github.com/user-attachments/assets/94df66b5-502a-49f3-873f-6a65556eed73)
 
+[![CI](https://github.com/TharunKumarReddyPolu/LLD-Handbook-for-Coding-Interviews/actions/workflows/ci.yml/badge.svg)](https://github.com/TharunKumarReddyPolu/LLD-Handbook-for-Coding-Interviews/actions/workflows/ci.yml)
 [![GitHub stars](https://img.shields.io/github/stars/TharunKumarReddyPolu/LLD-Handbook-for-Coding-Interviews?style=social)](https://github.com/TharunKumarReddyPolu/LLD-Handbook-for-Coding-Interviews/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/TharunKumarReddyPolu/LLD-Handbook-for-Coding-Interviews?style=social)](https://github.com/TharunKumarReddyPolu/LLD-Handbook-for-Coding-Interviews/network/members)
 [![GitHub issues](https://img.shields.io/github/issues/TharunKumarReddyPolu/LLD-Handbook-for-Coding-Interviews)](https://github.com/TharunKumarReddyPolu/LLD-Handbook-for-Coding-Interviews/issues)

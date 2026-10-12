@@ -9,7 +9,7 @@
 [![GitHub forks](https://img.shields.io/github/forks/TharunKumarReddyPolu/LLD-Handbook-for-Coding-Interviews?style=social)](https://github.com/TharunKumarReddyPolu/LLD-Handbook-for-Coding-Interviews/network/members)
 [![GitHub issues](https://img.shields.io/github/issues/TharunKumarReddyPolu/LLD-Handbook-for-Coding-Interviews)](https://github.com/TharunKumarReddyPolu/LLD-Handbook-for-Coding-Interviews/issues)
 [![GitHub license](https://img.shields.io/github/license/TharunKumarReddyPolu/LLD-Handbook-for-Coding-Interviews)](https://github.com/TharunKumarReddyPolu/LLD-Handbook-for-Coding-Interviews/blob/main/LICENSE)
-[![Last Updated](https://img.shields.io/badge/last%20updated-September%202026-blue)](https://github.com/TharunKumarReddyPolu/LLD-Handbook-for-Coding-Interviews)
+[![Last Updated](https://img.shields.io/badge/last%20updated-October%202026-blue)](https://github.com/TharunKumarReddyPolu/LLD-Handbook-for-Coding-Interviews)
 
 </div>
 
@@ -240,6 +240,8 @@ If this handbook helps you in your interview preparation, please consider:
 [![Fork this repo](https://img.shields.io/badge/🍴%20Fork%20this%20repo-success?style=for-the-badge)](https://github.com/TharunKumarReddyPolu/LLD-Handbook-for-Coding-Interviews/fork)
 
 </div>
+
+> 📚 **More interview handbooks by the author:** [DSA Handbook for Coding Interviews](https://github.com/TharunKumarReddyPolu/DSA-Handbook-for-Coding-Interviews) · [HLD Handbook for Coding Interviews](https://github.com/TharunKumarReddyPolu/HLD-Handbook-for-Coding-Interviews) · [Go Handbook for Software Engineers](https://github.com/TharunKumarReddyPolu/Go-Handbook-for-Software-Engineers)
 
 ---
 

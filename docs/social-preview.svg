@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0d1117"/>
+      <stop offset="1" stop-color="#161b22"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#58a6ff"/>
+      <stop offset="1" stop-color="#3fb950"/>
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="640" fill="url(#bg)"/>
+  <rect y="0" width="1280" height="10" fill="url(#accent)"/>
+  <rect y="630" width="1280" height="10" fill="url(#accent)"/>
+  <!-- faint class-diagram motif -->
+  <g stroke="#30363d" stroke-width="3" fill="none">
+    <rect x="920" y="120" width="260" height="150" rx="12"/>
+    <line x1="920" y1="175" x2="1180" y2="175"/>
+    <rect x="980" y="380" width="260" height="150" rx="12"/>
+    <line x1="980" y1="435" x2="1240" y2="435"/>
+    <line x1="1050" y1="270" x2="1050" y2="380" stroke-dasharray="10 8"/>
+    <polygon points="1050,380 1040,362 1060,362" fill="#30363d" stroke="none"/>
+  </g>
+  <g font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+    <text x="90" y="210" font-size="44" font-weight="600" fill="#58a6ff">LLD HANDBOOK</text>
+    <text x="90" y="300" font-size="76" font-weight="800" fill="#f0f6fc">for Coding Interviews</text>
+    <text x="90" y="375" font-size="34" fill="#8b949e">9 runnable machine-coding solutions &#183; SOLID &#183; Design Patterns</text>
+    <text x="90" y="425" font-size="34" fill="#8b949e">Parking Lot &#183; Splitwise &#183; BookMyShow &#183; Elevator &#183; Java</text>
+    <g font-size="28" fill="#3fb950">
+      <text x="90" y="520">&#10003; Compiles on every push (CI)</text>
+      <text x="90" y="565">&#10003; Class diagrams + edge cases + follow-ups</text>
+    </g>
+  </g>
+</svg>
